@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>スタッフ専用｜たにもとの家</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        :root{--cream:#faf8f5;--white:#fff;--warm-50:#f5f0eb;--warm-100:#e8e0d8;--warm-200:#d4c8ba;--warm-600:#7a6b5d;--warm-700:#5c4f43;--warm-800:#3d3429;--warm-900:#2a231b;--accent:#8b7355;--red:#c0392b;--green:#27ae60;--shadow-sm:0 1px 3px rgba(0,0,0,.06);--shadow-md:0 4px 20px rgba(0,0,0,.08);--radius:12px;--radius-lg:20px}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:"Noto Sans JP",system-ui,sans-serif;color:var(--warm-800);background:var(--cream);line-height:1.8}
+        a{color:inherit;text-decoration:none}
+        .container{width:min(900px,90vw);margin:0 auto}
+
+        /* Login overlay */
+        #loginOverlay{position:fixed;inset:0;background:var(--cream);z-index:9999;display:flex;align-items:center;justify-content:center}
+        .login-box{background:var(--white);border:1px solid var(--warm-100);border-radius:var(--radius-lg);padding:48px 40px;max-width:400px;width:90vw;box-shadow:var(--shadow-md);text-align:center}
+        .login-box h1{font-family:"Noto Serif JP",serif;font-size:22px;margin-bottom:8px}
+        .login-box p{font-size:13px;color:var(--warm-600);margin-bottom:24px}
+        .login-box input{width:100%;padding:14px 16px;border:1px solid var(--warm-200);border-radius:10px;font-size:16px;font-family:inherit;outline:none;text-align:center;letter-spacing:.1em}
+        .login-box input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,115,85,.12)}
+        .login-box button{margin-top:16px;width:100%;padding:14px;border:none;border-radius:999px;background:var(--warm-900);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+        .login-box button:hover{background:var(--warm-700)}
+        .login-error{color:var(--red);font-size:13px;margin-top:12px;display:none}
+
+        /* Admin content */
+        #adminContent{display:none}
+        .admin-header{background:var(--warm-900);color:#fff;padding:16px 0}
+        .admin-header__inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+        .admin-header h1{font-size:18px;font-weight:700}
+        .admin-header a{color:rgba(255,255,255,.7);font-size:13px;padding:8px 16px;border:1px solid rgba(255,255,255,.2);border-radius:999px}
+        .admin-header a:hover{color:#fff;border-color:rgba(255,255,255,.5)}
+
+        .admin-nav{background:var(--white);border-bottom:1px solid var(--warm-100);padding:12px 0;position:sticky;top:0;z-index:10}
+        .admin-nav__inner{display:flex;gap:8px;flex-wrap:wrap}
+        .admin-nav a{font-size:13px;font-weight:600;color:var(--warm-600);padding:8px 16px;border-radius:999px;border:1px solid var(--warm-100)}
+        .admin-nav a:hover,.admin-nav a.active{color:var(--warm-900);border-color:var(--accent);background:var(--warm-50)}
+
+        .admin-main{padding:32px 0 80px}
+        .section{margin-bottom:32px}
+        .section h2{font-size:18px;font-weight:700;margin-bottom:4px}
+        .section p.desc{font-size:13px;color:var(--warm-600);margin-bottom:16px}
+
+        .edit-panel{background:var(--white);border:1px solid var(--warm-100);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:16px}
+        .edit-panel__header{padding:14px 20px;background:var(--warm-50);border-bottom:1px solid var(--warm-100);font-size:14px;font-weight:700}
+        .edit-panel__body{padding:20px}
+
+        .form-row{display:grid;grid-template-columns:160px 1fr;gap:12px;align-items:center;margin-bottom:12px}
+        .form-row:last-child{margin-bottom:0}
+        .form-row label{font-size:13px;font-weight:600;color:var(--warm-600)}
+        .form-row input,.form-row textarea,.form-row select{width:100%;padding:10px 12px;border:1px solid var(--warm-200);border-radius:8px;font-size:14px;font-family:inherit;outline:none}
+        .form-row input:focus,.form-row textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,115,85,.12)}
+        .form-row textarea{resize:vertical;min-height:80px}
+        @media(max-width:600px){.form-row{grid-template-columns:1fr}}
+
+        .price-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+        .price-item{background:var(--warm-50);border:1px solid var(--warm-100);border-radius:10px;padding:14px}
+        .price-item label{display:block;font-size:12px;font-weight:700;color:var(--warm-600);margin-bottom:4px}
+        .price-item input{width:100%;padding:8px 10px;border:1px solid var(--warm-200);border-radius:6px;font-size:15px;font-weight:700;font-family:inherit;outline:none}
+        .price-item input:focus{border-color:var(--accent)}
+        .price-item .unit{font-size:11px;color:var(--warm-600);margin-top:2px}
+
+        .btn-save{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border:none;border-radius:999px;background:var(--warm-900);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
+        .btn-save:hover{background:var(--warm-700)}
+        .save-msg{display:inline-block;margin-left:12px;font-size:13px;color:var(--green);font-weight:600;opacity:0;transition:opacity .3s}
+        .save-msg.show{opacity:1}
+
+        .tip{background:#fffbe6;border:1px solid #f0e6a0;border-radius:10px;padding:14px 18px;font-size:13px;color:#8a7620;margin-bottom:20px;line-height:1.7}
+
+        /* Image management */
+        .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+        .img-card{background:var(--warm-50);border:1px solid var(--warm-100);border-radius:var(--radius);padding:14px;text-align:center}
+        .img-card__label{font-size:13px;font-weight:700;color:var(--warm-600);margin-bottom:8px}
+        .img-card__preview{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;background:var(--warm-100);margin-bottom:8px;display:block}
+        .img-card input[type="file"]{display:none}
+        .img-card__btn{display:inline-block;padding:8px 16px;font-size:13px;font-weight:600;color:var(--accent);border:1px solid var(--warm-200);border-radius:999px;cursor:pointer;transition:all .2s;font-family:inherit}
+        .img-card__btn:hover{background:var(--white);border-color:var(--accent)}
+        .img-card__reset{display:inline-block;padding:6px 12px;font-size:12px;color:var(--red);border:1px solid var(--warm-200);border-radius:999px;cursor:pointer;margin-left:6px;background:none;font-family:inherit}
+        .img-card__reset:hover{border-color:var(--red);background:rgba(192,57,43,.05)}
+        .img-card.featured{grid-column:span 2}
+        @media(max-width:600px){.img-card.featured{grid-column:span 1}}
+    </style>
+</head>
+<body>
+
+<!-- Login Gate -->
+<div id="loginOverlay">
+    <div class="login-box">
+        <h1>スタッフ専用ページ</h1>
+        <p>パスワードを入力してください</p>
+        <input type="password" id="pwInput" placeholder="パスワード" onkeydown="if(event.key==='Enter')tryLogin()" />
+        <button onclick="tryLogin()">ログイン</button>
+        <div class="login-error" id="loginError">パスワードが違います</div>
+    </div>
+</div>
+
+<!-- Admin Content -->
+<div id="adminContent">
+
+<div class="admin-header">
+    <div class="container admin-header__inner">
+        <h1>たにもとの家 管理ページ</h1>
+        <a href="./index.html">サイトに戻る</a>
+    </div>
+</div>
+
+<div class="admin-nav">
+    <div class="container admin-nav__inner">
+        <a href="#sec-company" class="active">会社情報</a>
+        <a href="#sec-price">見積り単価</a>
+        <a href="#sec-water">水回り金額</a>
+        <a href="#sec-option">オプション金額</a>
+        <a href="#sec-hero">トップページ</a>
+        <a href="#sec-images">画像管理</a>
+    </div>
+</div>
+
+<div class="container admin-main">
+
+    <div class="tip">
+        ここで変更した内容は、このブラウザに保存されます。変更後は「保存する」ボタンを押してください。<br/>
+        ※別のパソコン・ブラウザからは反映されません。本格運用時はサーバー連携が必要です。
+    </div>
+
+    <!-- 会社情報 -->
+    <div class="section" id="sec-company">
+        <h2>会社情報</h2>
+        <p class="desc">about.html・contact.htmlのフッターなどに表示される情報です</p>
+        <div class="edit-panel">
+            <div class="edit-panel__header">基本情報</div>
+            <div class="edit-panel__body">
+                <div class="form-row"><label>屋号</label><input type="text" id="c_name" value="たにもとの家" /></div>
+                <div class="form-row"><label>代表者名</label><input type="text" id="c_rep" value="谷本シンジ" /></div>
+                <div class="form-row"><label>所在地</label><input type="text" id="c_address" value="広島県江田島市" /></div>
+                <div class="form-row"><label>電話番号</label><input type="text" id="c_phone" value="000-0000-0000" /></div>
+                <div class="form-row"><label>メールアドレス</label><input type="text" id="c_email" value="info@example.com" /></div>
+                <div class="form-row"><label>受付時間</label><input type="text" id="c_hours" value="平日 9:00〜18:00" /></div>
+                <div class="form-row"><label>対応エリア</label><input type="text" id="c_area" value="江田島・広島近郊" /></div>
+                <div class="form-row"><label>事業内容</label><input type="text" id="c_biz" value="建築設計 / 新築 / リノベーション / 店舗" /></div>
+            </div>
+        </div>
+        <button class="btn-save" onclick="saveData('company')">保存する</button>
+        <span class="save-msg" id="msg_company">保存しました</span>
+    </div>
+
+    <!-- 見積り単価 -->
+    <div class="section" id="sec-price">
+        <h2>見積り単価（坪単価）</h2>
+        <p class="desc">概算見積りページの坪単価です（万円/坪）</p>
+        <div class="edit-panel">
+            <div class="edit-panel__header">構造別 坪単価</div>
+            <div class="edit-panel__body">
+                <div class="price-grid">
+                    <div class="price-item"><label>木造 平屋</label><input type="number" id="p_wood1" value="90" /><div class="unit">万円/坪</div></div>
+                    <div class="price-item"><label>木造 2階建</label><input type="number" id="p_wood2" value="85" /><div class="unit">万円/坪</div></div>
+                    <div class="price-item"><label>鉄骨 平屋</label><input type="number" id="p_steel1" value="140" /><div class="unit">万円/坪</div></div>
+                    <div class="price-item"><label>鉄骨 2階建</label><input type="number" id="p_steel2" value="150" /><div class="unit">万円/坪</div></div>
+                    <div class="price-item"><label>RC 平屋</label><input type="number" id="p_rc1" value="150" /><div class="unit">万円/坪</div></div>
+                    <div class="price-item"><label>RC 2階建</label><input type="number" id="p_rc2" value="150" /><div class="unit">万円/坪</div></div>
+                </div>
+            </div>
+        </div>
+        <button class="btn-save" onclick="saveData('price')">保存する</button>
+        <span class="save-msg" id="msg_price">保存しました</span>
+    </div>
+
+    <!-- 水回り金額 -->
+    <div class="section" id="sec-water">
+        <h2>水回り金額</h2>
+        <p class="desc">各グレードの金額（万円）</p>
+        <div class="edit-panel">
+            <div class="edit-panel__header">お風呂場</div>
+            <div class="edit-panel__body">
+                <div class="price-grid">
+                    <div class="price-item"><label>スタンダード</label><input type="number" id="w_bath1" value="60" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>ハイグレード</label><input type="number" id="w_bath2" value="120" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>プレミアム</label><input type="number" id="w_bath3" value="150" /><div class="unit">万円</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="edit-panel">
+            <div class="edit-panel__header">トイレ</div>
+            <div class="edit-panel__body">
+                <div class="price-grid">
+                    <div class="price-item"><label>スタンダード</label><input type="number" id="w_toilet1" value="10" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>ハイグレード</label><input type="number" id="w_toilet2" value="30" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>プレミアム</label><input type="number" id="w_toilet3" value="60" /><div class="unit">万円</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="edit-panel">
+            <div class="edit-panel__header">キッチン</div>
+            <div class="edit-panel__body">
+                <div class="price-grid">
+                    <div class="price-item"><label>スタンダード</label><input type="number" id="w_kitchen1" value="60" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>ハイグレード</label><input type="number" id="w_kitchen2" value="120" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>プレミアム</label><input type="number" id="w_kitchen3" value="150" /><div class="unit">万円</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="edit-panel">
+            <div class="edit-panel__header">洗面台</div>
+            <div class="edit-panel__body">
+                <div class="price-grid">
+                    <div class="price-item"><label>スタンダード</label><input type="number" id="w_wash1" value="5" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>ハイグレード</label><input type="number" id="w_wash2" value="30" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>プレミアム</label><input type="number" id="w_wash3" value="50" /><div class="unit">万円</div></div>
+                </div>
+            </div>
+        </div>
+        <button class="btn-save" onclick="saveData('water')">保存する</button>
+        <span class="save-msg" id="msg_water">保存しました</span>
+    </div>
+
+    <!-- オプション金額 -->
+    <div class="section" id="sec-option">
+        <h2>オプション金額</h2>
+        <p class="desc">各オプションの金額（万円）</p>
+        <div class="edit-panel">
+            <div class="edit-panel__header">オプション単価</div>
+            <div class="edit-panel__body">
+                <div class="price-grid">
+                    <div class="price-item"><label>太陽光</label><input type="number" id="o_solar" value="250" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>ガレージ 1台</label><input type="number" id="o_garage1" value="60" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>ガレージ 2台</label><input type="number" id="o_garage2" value="150" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>ガレージ 3台</label><input type="number" id="o_garage3" value="350" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>造作物 スタンダード</label><input type="number" id="o_built1" value="30" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>造作物 ハイグレード</label><input type="number" id="o_built2" value="120" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>造作物 プレミアム</label><input type="number" id="o_built3" value="150" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>エアコン スタンダード</label><input type="number" id="o_ac1" value="8" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>エアコン ハイグレード</label><input type="number" id="o_ac2" value="15" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>エアコン プレミアム</label><input type="number" id="o_ac3" value="30" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>カメラ スタンダード</label><input type="number" id="o_cam1" value="20" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>カメラ ハイグレード</label><input type="number" id="o_cam2" value="35" /><div class="unit">万円</div></div>
+                    <div class="price-item"><label>カメラ プレミアム</label><input type="number" id="o_cam3" value="50" /><div class="unit">万円</div></div>
+                </div>
+            </div>
+        </div>
+        <button class="btn-save" onclick="saveData('option')">保存する</button>
+        <span class="save-msg" id="msg_option">保存しました</span>
+    </div>
+
+    <!-- トップページ -->
+    <div class="section" id="sec-hero">
+        <h2>トップページ</h2>
+        <p class="desc">トップページのキャッチコピーやテキスト</p>
+        <div class="edit-panel">
+            <div class="edit-panel__header">ヒーローセクション</div>
+            <div class="edit-panel__body">
+                <div class="form-row"><label>キャッチコピー</label><input type="text" id="h_catch" value='遊び心と上品さ。"任せて安心"の家づくり。' /></div>
+                <div class="form-row"><label>サブテキスト</label><textarea id="h_sub">代表・谷本シンジが設計から施工まで手がけ、暮らしの"好き"が長く続く住まいをお届けします。</textarea></div>
+            </div>
+        </div>
+        <button class="btn-save" onclick="saveData('hero')">保存する</button>
+        <span class="save-msg" id="msg_hero">保存しました</span>
+    </div>
+
+    <!-- 画像管理 -->
+    <div class="section" id="sec-images">
+        <h2>画像管理</h2>
+        <p class="desc">各ページの画像を変更できます。画像を選択するとプレビューが表示されます。「リセット」で元の画像に戻ります。</p>
+
+        <!-- トップページ ヒーロー画像 -->
+        <div class="edit-panel">
+            <div class="edit-panel__header">トップページ — ヒーロー背景画像</div>
+            <div class="edit-panel__body">
+                <div class="img-grid">
+                    <div class="img-card">
+                        <div class="img-card__label">ヒーロー背景</div>
+                        <img class="img-card__preview" id="prev_hero_bg" src="./images/IMG_6576.JPG" alt="ヒーロー背景" />
+                        <input type="file" id="file_hero_bg" accept="image/*" onchange="previewImage('hero_bg', this)" />
+                        <label class="img-card__btn" for="file_hero_bg">画像を選択</label>
+                        <button class="img-card__reset" onclick="resetImage('hero_bg','./images/IMG_6576.JPG')">リセット</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 会社紹介ページ 代表写真 -->
+        <div class="edit-panel">
+            <div class="edit-panel__header">会社紹介ページ — 代表挨拶写真</div>
+            <div class="edit-panel__body">
+                <div class="img-grid">
+                    <div class="img-card">
+                        <div class="img-card__label">代表挨拶</div>
+                        <img class="img-card__preview" id="prev_about_rep" src="./images/IMG_6576.JPG" alt="代表写真" />
+                        <input type="file" id="file_about_rep" accept="image/*" onchange="previewImage('about_rep', this)" />
+                        <label class="img-card__btn" for="file_about_rep">画像を選択</label>
+                        <button class="img-card__reset" onclick="resetImage('about_rep','./images/IMG_6576.JPG')">リセット</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 施工事例ページ ギャラリー -->
+        <div class="edit-panel">
+            <div class="edit-panel__header">施工事例ページ — ギャラリー画像</div>
+            <div class="edit-panel__body">
+                <div class="img-grid">
+                    <div class="img-card featured">
+                        <div class="img-card__label">LDK俯瞰（メイン）</div>
+                        <img class="img-card__preview" id="prev_works_0" src="./images/IMG_6584.PNG" alt="LDK俯瞰" />
+                        <input type="file" id="file_works_0" accept="image/*" onchange="previewImage('works_0', this)" />
+                        <label class="img-card__btn" for="file_works_0">画像を選択</label>
+                        <button class="img-card__reset" onclick="resetImage('works_0','./images/IMG_6584.PNG')">リセット</button>
+                    </div>
+                    <div class="img-card">
+                        <div class="img-card__label">畳のワークスペース</div>
+                        <img class="img-card__preview" id="prev_works_1" src="./images/IMG_6577.JPG" alt="畳のワークスペース" />
+                        <input type="file" id="file_works_1" accept="image/*" onchange="previewImage('works_1', this)" />
+                        <label class="img-card__btn" for="file_works_1">画像を選択</label>
+                        <button class="img-card__reset" onclick="resetImage('works_1','./images/IMG_6577.JPG')">リセット</button>
+                    </div>
+                    <div class="img-card">
+                        <div class="img-card__label">木の梁が美しい天井</div>
+                        <img class="img-card__preview" id="prev_works_2" src="./images/IMG_6578.JPG" alt="木の梁が美しい天井" />
+                        <input type="file" id="file_works_2" accept="image/*" onchange="previewImage('works_2', this)" />
+                        <label class="img-card__btn" for="file_works_2">画像を選択</label>
+                        <button class="img-card__reset" onclick="resetImage('works_2','./images/IMG_6578.JPG')">リセット</button>
+                    </div>
+                    <div class="img-card">
+                        <div class="img-card__label">吹き抜けと箱階段</div>
+                        <img class="img-card__preview" id="prev_works_3" src="./images/IMG_6583.PNG" alt="吹き抜けと箱階段" />
+                        <input type="file" id="file_works_3" accept="image/*" onchange="previewImage('works_3', this)" />
+                        <label class="img-card__btn" for="file_works_3">画像を選択</label>
+                        <button class="img-card__reset" onclick="resetImage('works_3','./images/IMG_6583.PNG')">リセット</button>
+                    </div>
+                    <div class="img-card">
+                        <div class="img-card__label">和室</div>
+                        <img class="img-card__preview" id="prev_works_4" src="./images/IMG_6580.JPG" alt="和室" />
+                        <input type="file" id="file_works_4" accept="image/*" onchange="previewImage('works_4', this)" />
+                        <label class="img-card__btn" for="file_works_4">画像を選択</label>
+                        <button class="img-card__reset" onclick="resetImage('works_4','./images/IMG_6580.JPG')">リセット</button>
+                    </div>
+                    <div class="img-card">
+                        <div class="img-card__label">玄関</div>
+                        <img class="img-card__preview" id="prev_works_5" src="./images/IMG_6579.JPG" alt="玄関" />
+                        <input type="file" id="file_works_5" accept="image/*" onchange="previewImage('works_5', this)" />
+                        <label class="img-card__btn" for="file_works_5">画像を選択</label>
+                        <button class="img-card__reset" onclick="resetImage('works_5','./images/IMG_6579.JPG')">リセット</button>
+                    </div>
+                    <div class="img-card">
+                        <div class="img-card__label">ロフトの廊下</div>
+                        <img class="img-card__preview" id="prev_works_6" src="./images/IMG_6582.PNG" alt="ロフトの廊下" />
+                        <input type="file" id="file_works_6" accept="image/*" onchange="previewImage('works_6', this)" />
+                        <label class="img-card__btn" for="file_works_6">画像を選択</label>
+                        <button class="img-card__reset" onclick="resetImage('works_6','./images/IMG_6582.PNG')">リセット</button>
+                    </div>
+                    <div class="img-card">
+                        <div class="img-card__label">梁と吹き抜け</div>
+                        <img class="img-card__preview" id="prev_works_7" src="./images/IMG_6585.PNG" alt="梁と吹き抜け" />
+                        <input type="file" id="file_works_7" accept="image/*" onchange="previewImage('works_7', this)" />
+                        <label class="img-card__btn" for="file_works_7">画像を選択</label>
+                        <button class="img-card__reset" onclick="resetImage('works_7','./images/IMG_6585.PNG')">リセット</button>
+                    </div>
+                    <div class="img-card">
+                        <div class="img-card__label">オフィススペース</div>
+                        <img class="img-card__preview" id="prev_works_8" src="./images/IMG_6581.JPG" alt="オフィススペース" />
+                        <input type="file" id="file_works_8" accept="image/*" onchange="previewImage('works_8', this)" />
+                        <label class="img-card__btn" for="file_works_8">画像を選択</label>
+                        <button class="img-card__reset" onclick="resetImage('works_8','./images/IMG_6581.JPG')">リセット</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn-save" onclick="saveImages()">保存する</button>
+        <span class="save-msg" id="msg_images">保存しました</span>
+    </div>
+
+</div>
+</div>
+
+<script>
+// ===== Password =====
+// ※パスワードは簡易的なクライアント側チェックです
+var ADMIN_PASS = '0000';
+
+function tryLogin() {
+    var input = document.getElementById('pwInput').value;
+    if (input === ADMIN_PASS) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        sessionStorage.setItem('admin_auth', '1');
+        loadAllData();
+    } else {
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('pwInput').value = '';
+        document.getElementById('pwInput').focus();
+    }
+}
+
+// Auto-login if already authenticated in this session
+if (sessionStorage.getItem('admin_auth') === '1') {
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+}
+
+// ===== Save / Load =====
+var STORAGE_KEY = 'tanimoto_admin_';
+
+function saveData(section) {
+    var data = {};
+    var inputs = document.querySelectorAll('#sec-' + section + ' input, #sec-' + section + ' textarea');
+    for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].id) data[inputs[i].id] = inputs[i].value;
+    }
+    localStorage.setItem(STORAGE_KEY + section, JSON.stringify(data));
+
+    // Show saved message
+    var msg = document.getElementById('msg_' + section);
+    if (msg) {
+        msg.classList.add('show');
+        setTimeout(function(){ msg.classList.remove('show'); }, 2000);
+    }
+}
+
+function loadAllData() {
+    ['company','price','water','option','hero'].forEach(function(section) {
+        var raw = localStorage.getItem(STORAGE_KEY + section);
+        if (!raw) return;
+        try {
+            var data = JSON.parse(raw);
+            for (var key in data) {
+                var el = document.getElementById(key);
+                if (el) el.value = data[key];
+            }
+        } catch(e) {}
+    });
+}
+
+// Load on page ready
+loadAllData();
+
+// ===== Image Management =====
+var IMG_KEYS = ['hero_bg','about_rep','works_0','works_1','works_2','works_3','works_4','works_5','works_6','works_7','works_8'];
+var imgDataStore = {}; // temporary store before save
+
+function resizeImage(file, maxW, maxH, callback) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var img = new Image();
+        img.onload = function() {
+            var w = img.width, h = img.height;
+            if (w > maxW || h > maxH) {
+                var ratio = Math.min(maxW / w, maxH / h);
+                w = Math.round(w * ratio);
+                h = Math.round(h * ratio);
+            }
+            var canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            callback(canvas.toDataURL('image/jpeg', 0.8));
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+function previewImage(key, input) {
+    if (!input.files || !input.files[0]) return;
+    resizeImage(input.files[0], 1200, 900, function(dataUrl) {
+        document.getElementById('prev_' + key).src = dataUrl;
+        imgDataStore[key] = dataUrl;
+    });
+}
+
+function resetImage(key, defaultSrc) {
+    document.getElementById('prev_' + key).src = defaultSrc;
+    document.getElementById('file_' + key).value = '';
+    imgDataStore[key] = ''; // empty string means "remove override"
+}
+
+function saveImages() {
+    for (var key in imgDataStore) {
+        if (imgDataStore[key] === '') {
+            localStorage.removeItem(STORAGE_KEY + 'img_' + key);
+        } else {
+            try {
+                localStorage.setItem(STORAGE_KEY + 'img_' + key, imgDataStore[key]);
+            } catch(e) {
+                alert('画像の保存に失敗しました。容量オーバーの可能性があります。画像を小さくしてお試しください。');
+                return;
+            }
+        }
+    }
+    imgDataStore = {};
+    var msg = document.getElementById('msg_images');
+    if (msg) { msg.classList.add('show'); setTimeout(function(){ msg.classList.remove('show'); }, 2000); }
+}
+
+function loadImages() {
+    IMG_KEYS.forEach(function(key) {
+        var data = localStorage.getItem(STORAGE_KEY + 'img_' + key);
+        if (data) {
+            var el = document.getElementById('prev_' + key);
+            if (el) el.src = data;
+        }
+    });
+}
+
+// Load saved images on page load
+loadImages();
+
+// Smooth scroll for nav
+document.querySelectorAll('.admin-nav a').forEach(function(a){
+    a.addEventListener('click', function(){
+        document.querySelectorAll('.admin-nav a').forEach(function(x){ x.classList.remove('active'); });
+        a.classList.add('active');
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>たにもとの家｜江田島の匠</title>
+    <meta name="description" content="たにもとの家（広島県 江田島）。設計から施工まで。" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --white: #ffffff;
+            --warm-50: #f5f0eb;
+            --warm-100: #e8e0d8;
+            --warm-700: #5c4f43;
+            --warm-800: #3d3429;
+            --warm-900: #2a231b;
+            --accent-light: #b09a7c;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; }
+
+        body {
+            font-family: "Noto Sans JP", system-ui, -apple-system, sans-serif;
+            color: var(--warm-800);
+            background: #000;
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .container { width: min(1140px, 90vw); margin: 0 auto; }
+
+        /* ── Header ── */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .header__inner {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 0; gap: 16px;
+        }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand__main {
+            font-family: "Noto Serif JP", serif;
+            font-size: 22px; font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.06em;
+        }
+        .brand__sub {
+            font-size: 11px; font-weight: 500;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 0.12em;
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 4px 12px;
+            border-radius: 999px;
+        }
+
+        .nav { display: flex; align-items: center; gap: 4px; }
+        .nav a {
+            font-size: 14px; font-weight: 500;
+            color: rgba(255,255,255,0.7);
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .nav a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+        .nav__cta {
+            background: var(--white) !important;
+            color: var(--warm-900) !important;
+            font-weight: 700 !important;
+            padding: 10px 22px !important;
+            border-radius: 999px !important;
+        }
+        .nav__cta:hover { background: var(--warm-50) !important; }
+
+        .hamburger {
+            display: none; background: none; border: none; cursor: pointer;
+            width: 32px; height: 32px; position: relative;
+        }
+        .hamburger span {
+            display: block; width: 20px; height: 2px;
+            background: #fff; border-radius: 2px;
+            position: absolute; left: 6px; transition: all 0.3s;
+        }
+        .hamburger span:nth-child(1) { top: 9px; }
+        .hamburger span:nth-child(2) { top: 15px; }
+        .hamburger span:nth-child(3) { top: 21px; }
+
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            .nav {
+                display: none; position: absolute; top: 100%; left: 0; right: 0;
+                background: rgba(0,0,0,0.9); backdrop-filter: blur(20px);
+                flex-direction: column; padding: 16px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            .nav.open { display: flex; }
+            .nav a { width: 100%; text-align: center; padding: 16px; font-size: 16px; }
+        }
+
+        /* ── Full-screen Hero ── */
+        .hero {
+            position: relative;
+            width: 100%; height: 100vh;
+            overflow: hidden;
+        }
+        .hero__bg {
+            position: absolute; inset: 0;
+            background-image: url('./images/IMG_6576.JPG');
+            background-size: cover;
+            background-position: center 40%;
+            animation: heroZoom 20s ease-in-out infinite alternate;
+        }
+        @keyframes heroZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.06); }
+        }
+        .hero__overlay {
+            position: absolute; inset: 0;
+            background:
+                linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.5) 100%),
+                linear-gradient(90deg, rgba(0,0,0,0.5) 0%, transparent 60%);
+        }
+        .hero__content {
+            position: relative; z-index: 2;
+            height: 100%;
+            display: flex; flex-direction: column; justify-content: center;
+            max-width: 580px;
+            padding: 80px 0 60px;
+        }
+        .hero__kicker {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-size: 12px; font-weight: 500;
+            letter-spacing: 0.2em;
+            color: var(--accent-light);
+            margin-bottom: 24px;
+        }
+        .hero__kicker::before {
+            content: ''; display: block;
+            width: 32px; height: 1px;
+            background: var(--accent-light);
+        }
+        .hero h1 {
+            font-family: "Noto Serif JP", serif;
+            font-size: clamp(30px, 5.5vw, 50px);
+            font-weight: 700;
+            line-height: 1.35;
+            color: var(--white);
+            letter-spacing: 0.04em;
+        }
+        .hero__lead {
+            margin-top: 24px;
+            font-size: 15px;
+            line-height: 2;
+            color: rgba(255,255,255,0.75);
+        }
+        .hero__buttons {
+            margin-top: 36px;
+            display: flex; gap: 16px; flex-wrap: wrap;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 8px;
+            font-size: 15px; font-weight: 700;
+            padding: 16px 32px;
+            border-radius: 999px; border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.02em;
+        }
+        .btn--primary {
+            background: var(--white);
+            color: var(--warm-900);
+        }
+        .btn--primary:hover {
+            background: var(--warm-50);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        .btn--outline {
+            background: transparent;
+            color: var(--white);
+            border: 1.5px solid rgba(255,255,255,0.35);
+        }
+        .btn--outline:hover {
+            border-color: rgba(255,255,255,0.7);
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* ── Bottom bar ── */
+        .bottom-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding: 14px 0;
+        }
+        .bottom-bar__inner {
+            display: flex; align-items: center; justify-content: center;
+            gap: 32px; flex-wrap: wrap;
+            font-size: 13px; color: rgba(255,255,255,0.5);
+        }
+        .bottom-bar__inner a {
+            color: rgba(255,255,255,0.6);
+            transition: color 0.2s;
+        }
+        .bottom-bar__inner a:hover { color: #fff; }
+
+        /* Fade-in animation */
+        .hero__content > * {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+        .hero__content > *:nth-child(1) { animation-delay: 0.2s; }
+        .hero__content > *:nth-child(2) { animation-delay: 0.4s; }
+        .hero__content > *:nth-child(3) { animation-delay: 0.6s; }
+        .hero__content > *:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="container header__inner">
+        <a href="./index.html" class="brand">
+            <div class="brand__main">たにもとの家</div>
+            <div class="brand__sub">江田島の匠</div>
+        </a>
+        <button class="hamburger" onclick="document.querySelector('.nav').classList.toggle('open')" aria-label="メニュー">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="nav">
+            <a href="./works.html">施工事例</a>
+            <a href="./about.html">会社紹介</a>
+            <a href="./estimate.html">概算見積り</a>
+            <a href="./contact.html" class="nav__cta">お問い合わせ</a>
+        </nav>
+    </div>
+</header>
+
+<!-- Full-screen Hero -->
+<section class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__overlay"></div>
+    <div class="container hero__content">
+        <div class="hero__kicker">ETAJIMA / DESIGN &amp; BUILD</div>
+        <h1>遊び心と上品さ。<br />"任せて安心"の家づくり。</h1>
+        <p class="hero__lead">
+            代表・谷本シンジが設計から施工まで手がけ、<br />
+            暮らしの"好き"が長く続く住まいをお届けします。
+        </p>
+        <div class="hero__buttons">
+            <a class="btn btn--primary" href="./contact.html">無料相談・お問い合わせ</a>
+            <a class="btn btn--outline" href="./works.html">施工事例を見る</a>
+        </div>
+    </div>
+</section>
+
+<!-- Bottom bar -->
+<div class="bottom-bar">
+    <div class="container bottom-bar__inner">
+        <span>&copy; たにもとの家</span>
+        <a href="./works.html">施工事例</a>
+        <a href="./estimate.html">概算見積り</a>
+        <a href="./contact.html">お問い合わせ</a>
+        <a href="./admin.html" style="opacity:.35;font-size:11px">スタッフ専用</a>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.nav a').forEach(a => {
+    a.addEventListener('click', () => document.querySelector('.nav').classList.remove('open'));
+});
+
+// Load custom hero background from admin
+(function(){
+    var img = localStorage.getItem('tanimoto_admin_img_hero_bg');
+    if (img) {
+        document.querySelector('.hero__bg').style.backgroundImage = 'url(' + img + ')';
+    }
+})();
+</script>
+
+</body>
+</html>

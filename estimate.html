@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>概算見積り（シミュレーション）｜たにもとの家</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        :root{--cream:#faf8f5;--white:#fff;--warm-50:#f5f0eb;--warm-100:#e8e0d8;--warm-200:#d4c8ba;--warm-600:#7a6b5d;--warm-700:#5c4f43;--warm-800:#3d3429;--warm-900:#2a231b;--accent:#8b7355;--shadow-sm:0 1px 3px rgba(0,0,0,.06);--shadow-md:0 4px 20px rgba(0,0,0,.08);--radius:12px;--radius-lg:20px}
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+        body{font-family:"Noto Sans JP",system-ui,sans-serif;color:var(--warm-800);background:var(--cream);line-height:1.8;-webkit-font-smoothing:antialiased}
+        a{color:inherit;text-decoration:none}
+        .container{width:min(1140px,90vw);margin:0 auto}
+
+        .header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,248,245,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.06)}
+        .header__inner{display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:16px}
+        .brand{display:flex;align-items:center;gap:12px}
+        .brand__main{font-family:"Noto Serif JP",serif;font-size:22px;font-weight:700;color:var(--warm-900);letter-spacing:.06em}
+        .brand__sub{font-size:11px;font-weight:500;color:var(--accent);letter-spacing:.12em;border:1px solid var(--warm-100);padding:4px 12px;border-radius:999px}
+        .nav{display:flex;align-items:center;gap:6px}
+        .nav a{font-size:14px;font-weight:500;color:var(--warm-600);padding:8px 16px;border-radius:8px;transition:all .2s}
+        .nav a:hover{color:var(--warm-900);background:rgba(0,0,0,.04)}
+        .nav__cta{background:var(--warm-900)!important;color:var(--white)!important;font-weight:700!important;padding:10px 20px!important;border-radius:999px!important}
+        .hamburger{display:none;background:none;border:none;cursor:pointer;width:32px;height:32px;position:relative}
+        .hamburger span{display:block;width:20px;height:2px;background:var(--warm-800);border-radius:2px;position:absolute;left:6px}
+        .hamburger span:nth-child(1){top:9px}.hamburger span:nth-child(2){top:15px}.hamburger span:nth-child(3){top:21px}
+        @media(max-width:768px){.hamburger{display:block}.nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--white);flex-direction:column;padding:16px;border-bottom:1px solid var(--warm-100);box-shadow:var(--shadow-md)}.nav.open{display:flex}.nav a{width:100%;text-align:center;padding:14px;font-size:16px}}
+
+        .page-hero{margin-top:68px;padding:56px 0 40px;background:var(--white);border-bottom:1px solid var(--warm-100)}
+        .page-hero__label{font-size:12px;font-weight:500;letter-spacing:.16em;color:var(--accent);margin-bottom:12px}
+        .page-hero__title{font-family:"Noto Serif JP",serif;font-size:clamp(24px,4vw,34px);font-weight:700;margin-bottom:12px}
+        .page-hero__lead{font-size:14px;color:var(--warm-600);max-width:600px}
+
+        .main-content{padding:40px 0 72px}
+        .panel{background:var(--white);border:1px solid var(--warm-100);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:20px}
+        .panel__header{padding:16px 24px;border-bottom:1px solid var(--warm-100);background:var(--warm-50)}
+        .panel__header h2{font-size:16px;font-weight:700}
+        .panel__header p{font-size:12px;color:var(--warm-600);margin-top:2px}
+        .panel__body{padding:20px 24px}
+
+        .field{margin-bottom:16px}.field:last-child{margin-bottom:0}
+        .field label{display:block;font-size:14px;font-weight:700;margin-bottom:4px}
+        .field .help{display:block;font-size:12px;color:var(--warm-600);margin-bottom:6px}
+        .field select,.field input[type="number"],.field textarea{width:100%;padding:11px 14px;border:1px solid var(--warm-200);border-radius:10px;background:var(--white);color:var(--warm-800);font-size:15px;font-family:inherit;outline:none}
+        .field select:focus,.field input:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,115,85,.12)}
+        .field textarea{resize:vertical;min-height:50px;font-size:13px}
+        .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        @media(max-width:520px){.field-row{grid-template-columns:1fr}}
+
+        /* Water row: select left, images right */
+        .water-row{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:start;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--warm-100)}
+        .water-row:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0}
+        @media(max-width:700px){.water-row{grid-template-columns:1fr}}
+        .water-left label{display:block;font-size:14px;font-weight:700;margin-bottom:6px}
+        .water-left select{width:100%;padding:10px 12px;border:1px solid var(--warm-200);border-radius:10px;font-size:14px;font-family:inherit;outline:none;background:var(--white);color:var(--warm-800)}
+        .water-left select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,115,85,.12)}
+        .water-left textarea{width:100%;margin-top:8px;padding:8px 10px;border:1px solid var(--warm-200);border-radius:8px;font-size:12px;font-family:inherit;outline:none;resize:vertical;min-height:36px}
+
+        .water-images{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+        .wi-card{border:1px solid var(--warm-100);border-radius:10px;overflow:hidden;background:var(--white);display:none}
+        .wi-card.active{display:block;border-color:var(--accent);box-shadow:0 0 0 2px rgba(139,115,85,.12)}
+        .wi-img{height:72px}
+        .wi-body{padding:8px 10px}
+        .wi-tag{font-size:9px;font-weight:700;color:var(--accent);letter-spacing:.08em}
+        .wi-name{font-size:12px;font-weight:700;margin-top:1px}
+        .wi-desc{font-size:10px;color:var(--warm-600);margin-top:1px;line-height:1.3}
+        .wi-note{grid-column:1/-1;font-size:10px;color:var(--warm-600);text-align:center;padding-top:4px;display:none}
+        .wi-note.show{display:block}
+
+        /* Two column main layout */
+        .est-cols{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
+        @media(max-width:920px){.est-cols{grid-template-columns:1fr}}
+
+        .result-panel{position:sticky;top:84px}
+        .total-box{padding:24px;background:var(--warm-50);border:1px solid var(--warm-200);border-radius:var(--radius)}
+        .total-box__label{font-size:12px;font-weight:700;color:var(--warm-600);letter-spacing:.06em;margin-bottom:4px}
+        .total-box__value{font-family:"Noto Serif JP",serif;font-size:34px;font-weight:700;color:var(--warm-900)}
+        .breakdown{margin-top:16px}
+        .bd-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:9px 0;border-top:1px solid var(--warm-100)}
+        .bd-label{color:var(--warm-600)}.bd-val{font-weight:700;color:var(--warm-900);white-space:nowrap}
+        .bd-cat{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.06em;padding:12px 0 4px}
+        .btn-row{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+        .btn{display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;padding:13px 24px;border-radius:999px;border:none;cursor:pointer;transition:all .25s;font-family:inherit}
+        .btn--primary{background:var(--warm-900);color:#fff}.btn--primary:hover{background:var(--warm-700)}
+        .btn--ghost{background:transparent;color:var(--warm-600);border:1px solid var(--warm-200)}.btn--ghost:hover{border-color:var(--accent)}
+        .note{margin-top:16px;font-size:12px;color:var(--warm-600);line-height:1.8}
+
+        .footer{background:var(--warm-900);color:rgba(255,255,255,.5);padding:40px 0 28px;font-size:13px}
+        .footer__inner{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;flex-wrap:wrap}
+        .footer__brand{font-family:"Noto Serif JP",serif;font-size:18px;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:8px}
+        .footer__links{display:flex;gap:24px;flex-wrap:wrap}.footer__links a{transition:color .2s}.footer__links a:hover{color:rgba(255,255,255,.85)}
+        .footer__copy{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);text-align:center}
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container header__inner">
+        <a href="./index.html" class="brand"><div class="brand__main">たにもとの家</div><div class="brand__sub">江田島の匠</div></a>
+        <button class="hamburger" onclick="document.querySelector('.nav').classList.toggle('open')"><span></span><span></span><span></span></button>
+        <nav class="nav">
+            <a href="./works.html">施工事例</a><a href="./about.html">会社紹介</a><a href="./estimate.html">概算見積り</a><a href="./contact.html" class="nav__cta">お問い合わせ</a>
+        </nav>
+    </div>
+</header>
+
+<section class="page-hero">
+    <div class="container">
+        <div class="page-hero__label">ESTIMATE</div>
+        <h1 class="page-hero__title">概算見積りシミュレーション</h1>
+        <p class="page-hero__lead">選択するだけで概算金額が自動計算されます。※正確な金額は現地確認後にご案内します。</p>
+    </div>
+</section>
+
+<div class="container main-content">
+<div class="est-cols">
+<div>
+
+<!-- 基本条件 -->
+<div class="panel">
+    <div class="panel__header"><h2>基本条件</h2></div>
+    <div class="panel__body">
+        <div class="field"><label>構造</label><select id="structure" onchange="calc()"><option value="" selected disabled>選択してください</option><option value="wood">木造</option><option value="steel">鉄骨</option><option value="rc">RC（鉄筋コンクリート）</option></select></div>
+        <div class="field-row">
+            <div class="field"><label>建物タイプ</label><select id="floors" onchange="calc()"><option value="" selected disabled>選択してください</option><option value="1">平屋</option><option value="2">2階建て</option></select></div>
+            <div class="field"><label>延床面積（坪）</label><input id="tsubo" type="number" min="10" max="100" value="" placeholder="例：30" oninput="calc()" /></div>
+        </div>
+        <div class="field"><label>屋根</label><span class="help">※参考選択（金額には含みません）</span><select id="roof"><option value="" selected disabled>選択してください</option><option value="kawara">瓦</option><option value="bankin">板金</option><option value="colorbest">カラーベスト</option></select></div>
+    </div>
+</div>
+
+<!-- 水回り -->
+<div class="panel">
+    <div class="panel__header"><h2>水回り</h2><p>グレードを選ぶと、右にイメージが3パターン表示されます</p></div>
+    <div class="panel__body">
+
+        <!-- お風呂場 -->
+        <div class="water-row">
+            <div class="water-left">
+                <label>お風呂場</label>
+                <select id="bath" onchange="waterChanged('bath', this.value)">
+                    <option value="" selected disabled>選択してください</option>
+                    <option value="60">スタンダード（60万円）</option>
+                    <option value="120">ハイグレード（120万円）</option>
+                    <option value="150">プレミアム（150万円）</option>
+                </select>
+                <textarea placeholder="その他のご要望があれば記入"></textarea>
+            </div>
+            <div class="water-images" id="img_bath">
+                <div class="wi-card" data-grade="60"><div class="wi-img" style="background:linear-gradient(135deg,#d0e4f0,#90b8d0)"></div><div class="wi-body"><div class="wi-tag">STANDARD</div><div class="wi-name">ユニットバス</div><div class="wi-desc">清潔感のある標準仕様</div></div></div>
+                <div class="wi-card" data-grade="60"><div class="wi-img" style="background:linear-gradient(135deg,#c8dce8,#80aac4)"></div><div class="wi-body"><div class="wi-tag">STANDARD</div><div class="wi-name">浴室乾燥機付</div><div class="wi-desc">雨の日も安心</div></div></div>
+                <div class="wi-card" data-grade="60"><div class="wi-img" style="background:linear-gradient(135deg,#d8e8f0,#a0c4d8)"></div><div class="wi-body"><div class="wi-tag">STANDARD</div><div class="wi-name">追い焚き機能</div><div class="wi-desc">いつでも温かい</div></div></div>
+                <div class="wi-card" data-grade="120"><div class="wi-img" style="background:linear-gradient(135deg,#a8cce0,#5888a8)"></div><div class="wi-body"><div class="wi-tag">HIGH GRADE</div><div class="wi-name">ワイド浴槽</div><div class="wi-desc">ゆったりくつろぐ</div></div></div>
+                <div class="wi-card" data-grade="120"><div class="wi-img" style="background:linear-gradient(135deg,#b8d0e0,#4880a0)"></div><div class="wi-body"><div class="wi-tag">HIGH GRADE</div><div class="wi-name">ミストサウナ</div><div class="wi-desc">自宅でスパ気分</div></div></div>
+                <div class="wi-card" data-grade="120"><div class="wi-img" style="background:linear-gradient(135deg,#b0c8d8,#3870a0)"></div><div class="wi-body"><div class="wi-tag">HIGH GRADE</div><div class="wi-name">天然石調仕上</div><div class="wi-desc">高級感のある浴室</div></div></div>
+                <div class="wi-card" data-grade="150"><div class="wi-img" style="background:linear-gradient(135deg,#e0d4c0,#b89868)"></div><div class="wi-body"><div class="wi-tag">PREMIUM</div><div class="wi-name">檜風呂仕様</div><div class="wi-desc">木の香りに包まれる</div></div></div>
+                <div class="wi-card" data-grade="150"><div class="wi-img" style="background:linear-gradient(135deg,#d8c8b0,#a08050)"></div><div class="wi-body"><div class="wi-tag">PREMIUM</div><div class="wi-name">ジェットバス</div><div class="wi-desc">疲れを癒す空間</div></div></div>
+                <div class="wi-card" data-grade="150"><div class="wi-img" style="background:linear-gradient(135deg,#e8dcc8,#c0a060)"></div><div class="wi-body"><div class="wi-tag">PREMIUM</div><div class="wi-name">露天風呂風</div><div class="wi-desc">開放感のある至福</div></div></div>
+                <div class="wi-note" id="note_bath">※画像はイメージです</div>
+            </div>
+        </div>
+
+        <!-- トイレ -->
+        <div class="water-row">
+            <div class="water-left">
+                <label>トイレ</label>
+                <select id="toilet" onchange="waterChanged('toilet', this.value)">
+                    <option value="" selected disabled>選択してください</option>
+                    <option value="10">スタンダード（10万円）</option>
+                    <option value="30">ハイグレード（30万円）</option>
+                    <option value="60">プレミアム（60万円）</option>
+                </select>
+                <textarea placeholder="その他のご要望があれば記入"></textarea>
+            </div>
+            <div class="water-images" id="img_toilet">
+                <div class="wi-card" data-grade="10"><div class="wi-img" style="background:linear-gradient(135deg,#e8e4e0,#c0b8b0)"></div><div class="wi-body"><div class="wi-tag">STANDARD</div><div class="wi-name">温水洗浄便座</div><div class="wi-desc">基本的な快適機能</div></div></div>
+                <div class="wi-card" data-grade="10"><div class="wi-img" style="background:linear-gradient(135deg,#e0dcd8,#b8b0a8)"></div><div class="wi-body"><div class="wi-tag">STANDARD</div><div class="wi-name">節水タイプ</div><div class="wi-desc">省エネ設計</div></div></div>
+                <div class="wi-card" data-grade="10"><div class="wi-img" style="background:linear-gradient(135deg,#e4e0dc,#bcb4ac)"></div><div class="wi-body"><div class="wi-tag">STANDARD</div><div class="wi-name">コンパクト設計</div><div class="wi-desc">省スペース</div></div></div>
+                <div class="wi-card" data-grade="30"><div class="wi-img" style="background:linear-gradient(135deg,#d8d4d0,#989088)"></div><div class="wi-body"><div class="wi-tag">HIGH GRADE</div><div class="wi-name">タンクレス</div><div class="wi-desc">すっきりデザイン</div></div></div>
+                <div class="wi-card" data-grade="30"><div class="wi-img" style="background:linear-gradient(135deg,#d4d0cc,#908880)"></div><div class="wi-body"><div class="wi-tag">HIGH GRADE</div><div class="wi-name">自動洗浄</div><div class="wi-desc">触れずに清潔</div></div></div>
+                <div class="wi-card" data-grade="30"><div class="wi-img" style="background:linear-gradient(135deg,#dcd8d4,#a09890)"></div><div class="wi-body"><div class="wi-tag">HIGH GRADE</div><div class="wi-name">手洗いカウンター</div><div class="wi-desc">スタイリッシュ</div></div></div>
+                <div class="wi-card" data-grade="60"><div class="wi-img" style="background:linear-gradient(135deg,#c8c0b8,#807068)"></div><div class="wi-body"><div class="wi-tag">PREMIUM</div><div class="wi-name">フルオート</div><div class="wi-desc">全自動で快適</div></div></div>
+                <div class="wi-card" data-grade="60"><div class="wi-img" style="background:linear-gradient(135deg,#c0b8b0,#706860)"></div><div class="wi-body"><div class="wi-tag">PREMIUM</div><div class="wi-name">除菌・脱臭</div><div class="wi-desc">先進の清潔空間</div></div></div>
+                <div class="wi-card" data-grade="60"><div class="wi-img" style="background:linear-gradient(135deg,#d0c8c0,#887870)"></div><div class="wi-body"><div class="wi-tag">PREMIUM</div><div class="wi-name">デザイナーズ</div><div class="wi-desc">上質なデザイン</div></div></div>
+                <div class="wi-note" id="note_toilet">※画像はイメージです</div>
+            </div>
+        </div>
+
+        <!-- キッチン -->
+        <div class="water-row">
+            <div class="water-left">
+                <label>キッチン</label>
+                <select id="kitchen" onchange="waterChanged('kitchen', this.value)">
+                    <option value="" selected disabled>選択してください</option>
+                    <option value="60">スタンダード（60万円）</option>
+                    <option value="120">ハイグレード（120万円）</option>
+                    <option value="150">プレミアム（150万円）</option>
+                </select>
+                <textarea placeholder="その他のご要望があれば記入"></textarea>
+            </div>
+            <div class="water-images" id="img_kitchen">
+                <div class="wi-card" data-grade="60"><div class="wi-img" style="background:linear-gradient(135deg,#f0e8dc,#d0b890)"></div><div class="wi-body"><div class="wi-tag">STANDARD</div><div class="wi-name">I型キッチン</div><div class="wi-desc">シンプルレイアウト</div></div></div>
+                <div class="wi-card" data-grade="60"><div class="wi-img" style="background:linear-gradient(135deg,#e8e0d4,#c8b088)"></div><div class="wi-body"><div class="wi-tag">STANDARD</div><div class="wi-name">ステンレス天板</div><div class="wi-desc">お手入れしやすい</div></div></div>
+                <div class="wi-card" data-grade="60"><div class="wi-img" style="background:linear-gradient(135deg,#ece4d8,#d4bc94)"></div><div class="wi-body"><div class="wi-tag">STANDARD</div><div class="wi-name">食洗機付き</div><div class="wi-desc">家事の負担を軽減</div></div></div>
+                <div class="wi-card" data-grade="120"><div class="wi-img" style="background:linear-gradient(135deg,#e8dcc4,#b89868)"></div><div class="wi-body"><div class="wi-tag">HIGH GRADE</div><div class="wi-name">対面キッチン</div><div class="wi-desc">家族と会話が弾む</div></div></div>
+                <div class="wi-card" data-grade="120"><div class="wi-img" style="background:linear-gradient(135deg,#e4d8c0,#a88850)"></div><div class="wi-body"><div class="wi-tag">HIGH GRADE</div><div class="wi-name">人造大理石天板</div><div class="wi-desc">美しく上品</div></div></div>
+                <div class="wi-card" data-grade="120"><div class="wi-img" style="background:linear-gradient(135deg,#ece0c8,#c0a070)"></div><div class="wi-body"><div class="wi-tag">HIGH GRADE</div><div class="wi-name">IHコンロ</div><div class="wi-desc">安全で掃除しやすい</div></div></div>
+                <div class="wi-card" data-grade="150"><div class="wi-img" style="background:linear-gradient(135deg,#e0d0b4,#a08040)"></div><div class="wi-body"><div class="wi-tag">PREMIUM</div><div class="wi-name">アイランド型</div><div class="wi-desc">開放的な空間</div></div></div>
+                <div class="wi-card" data-grade="150"><div class="wi-img" style="background:linear-gradient(135deg,#dcccb0,#907038)"></div><div class="wi-body"><div class="wi-tag">PREMIUM</div><div class="wi-name">御影石天板</div><div class="wi-desc">本物の高級感</div></div></div>
+                <div class="wi-card" data-grade="150"><div class="wi-img" style="background:linear-gradient(135deg,#e4d4b8,#b08848)"></div><div class="wi-body"><div class="wi-tag">PREMIUM</div><div class="wi-name">オーダーメイド</div><div class="wi-desc">理想を形に</div></div></div>
+                <div class="wi-note" id="note_kitchen">※画像はイメージです</div>
+            </div>
+        </div>
+
+        <!-- 洗面台 -->
+        <div class="water-row">
+            <div class="water-left">
+                <label>洗面台</label>
+                <select id="wash" onchange="waterChanged('wash', this.value)">
+                    <option value="" selected disabled>選択してください</option>
+                    <option value="5">スタンダード（5万円）</option>
+                    <option value="30">ハイグレード（30万円）</option>
+                    <option value="50">プレミアム（50万円）</option>
+                </select>
+                <textarea placeholder="その他のご要望があれば記入"></textarea>
+            </div>
+            <div class="water-images" id="img_wash">
+                <div class="wi-card" data-grade="5"><div class="wi-img" style="background:linear-gradient(135deg,#e8e8e4,#c0c0b8)"></div><div class="wi-body"><div class="wi-tag">STANDARD</div><div class="wi-name">一体型洗面台</div><div class="wi-desc">コンパクト</div></div></div>
+                <div class="wi-card" data-grade="5"><div class="wi-img" style="background:linear-gradient(135deg,#e4e4e0,#b8b8b0)"></div><div class="wi-body"><div class="wi-tag">STANDARD</div><div class="wi-name">ミラーキャビネット</div><div class="wi-desc">収納力あり</div></div></div>
+                <div class="wi-card" data-grade="5"><div class="wi-img" style="background:linear-gradient(135deg,#ececec,#c4c4bc)"></div><div class="wi-body"><div class="wi-tag">STANDARD</div><div class="wi-name">シャワー水栓</div><div class="wi-desc">洗髪もできる</div></div></div>
+                <div class="wi-card" data-grade="30"><div class="wi-img" style="background:linear-gradient(135deg,#dce0dc,#98a098)"></div><div class="wi-body"><div class="wi-tag">HIGH GRADE</div><div class="wi-name">ワイドカウンター</div><div class="wi-desc">広い作業スペース</div></div></div>
+                <div class="wi-card" data-grade="30"><div class="wi-img" style="background:linear-gradient(135deg,#d8dcd8,#88a088)"></div><div class="wi-body"><div class="wi-tag">HIGH GRADE</div><div class="wi-name">タッチレス水栓</div><div class="wi-desc">衛生的で便利</div></div></div>
+                <div class="wi-card" data-grade="30"><div class="wi-img" style="background:linear-gradient(135deg,#e0e4e0,#a0b0a0)"></div><div class="wi-body"><div class="wi-tag">HIGH GRADE</div><div class="wi-name">LED照明ミラー</div><div class="wi-desc">明るくお手入れ簡単</div></div></div>
+                <div class="wi-card" data-grade="50"><div class="wi-img" style="background:linear-gradient(135deg,#d0d4d0,#788878)"></div><div class="wi-body"><div class="wi-tag">PREMIUM</div><div class="wi-name">造作洗面台</div><div class="wi-desc">オーダー仕様</div></div></div>
+                <div class="wi-card" data-grade="50"><div class="wi-img" style="background:linear-gradient(135deg,#ccd0cc,#708070)"></div><div class="wi-body"><div class="wi-tag">PREMIUM</div><div class="wi-name">陶器ボウル</div><div class="wi-desc">上質な美しさ</div></div></div>
+                <div class="wi-card" data-grade="50"><div class="wi-img" style="background:linear-gradient(135deg,#d4d8d4,#889888)"></div><div class="wi-body"><div class="wi-tag">PREMIUM</div><div class="wi-name">天然木カウンター</div><div class="wi-desc">木の温もり</div></div></div>
+                <div class="wi-note" id="note_wash">※画像はイメージです</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- オプション -->
+<div class="panel">
+    <div class="panel__header"><h2>オプション</h2></div>
+    <div class="panel__body">
+        <div class="field-row">
+            <div class="field"><label>太陽光</label><select id="solar" onchange="calc()"><option value="0" selected>なし</option><option value="250">設置する（250万円）</option></select></div>
+            <div class="field"><label>ガレージ</label><select id="garage" onchange="calc()"><option value="0" selected>なし</option><option value="60">1台（60万円）</option><option value="150">2台（150万円）</option><option value="350">3台（350万円）</option></select></div>
+        </div>
+        <div class="field-row">
+            <div class="field"><label>造作物</label><select id="builtin" onchange="calc()"><option value="0" selected>なし</option><option value="30">スタンダード（30万円）</option><option value="120">ハイグレード（120万円）</option><option value="150">プレミアム（150万円）</option></select></div>
+            <div class="field"><label>エアコン</label><select id="aircon" onchange="calc()"><option value="0" selected>なし</option><option value="8">スタンダード（8万円）</option><option value="15">ハイグレード（15万円）</option><option value="30">プレミアム（30万円）</option></select></div>
+        </div>
+        <div class="field"><label>監視カメラ</label><select id="camera" onchange="calc()"><option value="0" selected>なし</option><option value="20">スタンダード（20万円）</option><option value="35">ハイグレード（35万円）</option><option value="50">プレミアム（50万円）</option></select></div>
+        <div class="field"><label>外構</label><span class="help">グレード × 面積（m²）で計算</span><div class="field-row"><select id="exterior" onchange="calc()"><option value="0" selected>なし</option><option value="2">スタンダード（2万円/m²）</option><option value="8.5">ハイグレード（8.5万円/m²）</option><option value="20">プレミアム（20万円/m²）</option></select><input id="exteriorM2" type="number" min="0" max="500" value="0" placeholder="m²" oninput="calc()" /></div></div>
+        <div class="field"><label>床暖房</label><span class="help">グレード × 面積（m²）で計算</span><div class="field-row"><select id="floorheat" onchange="calc()"><option value="0" selected>なし</option><option value="3">スタンダード（3万円/m²）</option><option value="6">プレミアム（6万円/m²）</option></select><input id="floorheatM2" type="number" min="0" max="200" value="0" placeholder="m²" oninput="calc()" /></div></div>
+        <div class="field"><label>その他のご要望</label><textarea placeholder="上記以外のご要望があればご記入ください" style="min-height:70px"></textarea></div>
+    </div>
+</div>
+
+</div>
+
+<!-- Right: Result -->
+<div class="result-panel">
+    <div class="panel">
+        <div class="panel__header"><h2>概算結果</h2></div>
+        <div class="panel__body">
+            <div class="total-box"><div class="total-box__label">概算総額（税別・目安）</div><div class="total-box__value" id="totalPrice">---</div></div>
+            <div class="breakdown" id="breakdown"></div>
+            <div class="btn-row"><a class="btn btn--primary" href="./contact.html">この内容で相談する</a><button class="btn btn--ghost" type="button" onclick="resetAll()">リセット</button></div>
+            <div class="note">※あくまで目安です。実際の仕様・敷地条件で変動します。<br/>※屋根は参考選択のため金額に含みません。</div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer__inner"><div><div class="footer__brand">たにもとの家</div><div>広島県 江田島</div></div><div class="footer__links"><a href="./index.html">トップ</a><a href="./works.html">施工事例</a><a href="./estimate.html">概算見積り</a><a href="./contact.html">お問い合わせ</a></div></div>
+        <div class="footer__copy">&copy; たにもとの家 <a href="./admin.html" style="opacity:.35;font-size:11px;margin-left:16px">スタッフ専用</a></div>
+    </div>
+</footer>
+
+<script>
+// Water image switching - show only cards matching selected grade
+function waterChanged(name, value) {
+    var container = document.getElementById('img_' + name);
+    if (!container) return;
+    var cards = container.querySelectorAll('.wi-card');
+    for (var i = 0; i < cards.length; i++) {
+        if (cards[i].getAttribute('data-grade') === value) {
+            cards[i].style.display = '';
+            cards[i].classList.add('active');
+        } else {
+            cards[i].style.display = 'none';
+            cards[i].classList.remove('active');
+        }
+    }
+    var note = document.getElementById('note_' + name);
+    if (note) note.classList.add('show');
+    calc();
+}
+
+// Calc
+function calc() {
+    var structure = document.getElementById('structure').value;
+    var floors = document.getElementById('floors').value;
+    var tsuboRaw = document.getElementById('tsubo').value;
+
+    if (!structure || !floors || !tsuboRaw) {
+        document.getElementById('totalPrice').textContent = '---';
+        document.getElementById('breakdown').innerHTML = '<div style="text-align:center;padding:20px 0;color:#7a6b5d;font-size:14px">基本条件を選択すると<br>概算金額が表示されます</div>';
+        return;
+    }
+
+    var TSUBO = {wood:{'1':90,'2':85},steel:{'1':140,'2':150},rc:{'1':150,'2':150}};
+    var tsubo = Math.min(100, Math.max(10, Number(tsuboRaw) || 30));
+    var baseUnit = (TSUBO[structure] && TSUBO[structure][floors]) || 0;
+    var baseCost = baseUnit * tsubo;
+
+    var bath = Number(document.getElementById('bath').value) || 0;
+    var toilet = Number(document.getElementById('toilet').value) || 0;
+    var kitchen = Number(document.getElementById('kitchen').value) || 0;
+    var wash = Number(document.getElementById('wash').value) || 0;
+
+    var solar = Number(document.getElementById('solar').value) || 0;
+    var garage = Number(document.getElementById('garage').value) || 0;
+    var builtin = Number(document.getElementById('builtin').value) || 0;
+    var aircon = Number(document.getElementById('aircon').value) || 0;
+    var camera = Number(document.getElementById('camera').value) || 0;
+    var extU = Number(document.getElementById('exterior').value) || 0;
+    var extM = Number(document.getElementById('exteriorM2').value) || 0;
+    var fhU = Number(document.getElementById('floorheat').value) || 0;
+    var fhM = Number(document.getElementById('floorheatM2').value) || 0;
+
+    var total = baseCost + bath + toilet + kitchen + wash + solar + garage + builtin + aircon + camera + (extU*extM) + (fhU*fhM);
+
+    document.getElementById('totalPrice').textContent = total > 0 ? Math.round(total).toLocaleString('ja-JP') + '万円' : '---';
+
+    var sL = {wood:'木造',steel:'鉄骨',rc:'RC'}[structure] || 'その他';
+    var fL = floors === '1' ? '平屋' : '2階建て';
+    var ym = function(n){ return Math.round(n).toLocaleString('ja-JP') + '万円'; };
+    var h = '<div class="bd-cat">基本工事</div>';
+    h += '<div class="bd-row"><div class="bd-label">' + sL + ' ' + fL + '<br><small>' + baseUnit + '万円/坪 × ' + tsubo + '坪</small></div><div class="bd-val">' + ym(baseCost) + '</div></div>';
+    h += '<div class="bd-cat">水回り</div>';
+    h += '<div class="bd-row"><div class="bd-label">お風呂場</div><div class="bd-val">' + (bath > 0 ? ym(bath) : '未選択') + '</div></div>';
+    h += '<div class="bd-row"><div class="bd-label">トイレ</div><div class="bd-val">' + (toilet > 0 ? ym(toilet) : '未選択') + '</div></div>';
+    h += '<div class="bd-row"><div class="bd-label">キッチン</div><div class="bd-val">' + (kitchen > 0 ? ym(kitchen) : '未選択') + '</div></div>';
+    h += '<div class="bd-row"><div class="bd-label">洗面台</div><div class="bd-val">' + (wash > 0 ? ym(wash) : '未選択') + '</div></div>';
+    h += '<div class="bd-cat">オプション</div>';
+    if (solar > 0) h += '<div class="bd-row"><div class="bd-label">太陽光</div><div class="bd-val">' + ym(solar) + '</div></div>';
+    if (garage > 0) h += '<div class="bd-row"><div class="bd-label">ガレージ</div><div class="bd-val">' + ym(garage) + '</div></div>';
+    if (builtin > 0) h += '<div class="bd-row"><div class="bd-label">造作物</div><div class="bd-val">' + ym(builtin) + '</div></div>';
+    if (aircon > 0) h += '<div class="bd-row"><div class="bd-label">エアコン</div><div class="bd-val">' + ym(aircon) + '</div></div>';
+    if (camera > 0) h += '<div class="bd-row"><div class="bd-label">監視カメラ</div><div class="bd-val">' + ym(camera) + '</div></div>';
+    if (extU*extM > 0) h += '<div class="bd-row"><div class="bd-label">外構<br><small>' + extU + '万円/m² × ' + extM + 'm²</small></div><div class="bd-val">' + ym(extU*extM) + '</div></div>';
+    if (fhU*fhM > 0) h += '<div class="bd-row"><div class="bd-label">床暖房<br><small>' + fhU + '万円/m² × ' + fhM + 'm²</small></div><div class="bd-val">' + ym(fhU*fhM) + '</div></div>';
+    if (!solar && !garage && !builtin && !aircon && !camera && !(extU*extM) && !(fhU*fhM)) h += '<div class="bd-row"><div class="bd-label">選択なし</div><div class="bd-val">0万円</div></div>';
+    document.getElementById('breakdown').innerHTML = h;
+}
+
+function resetAll() {
+    document.getElementById('structure').value = '';
+    document.getElementById('floors').value = '';
+    document.getElementById('tsubo').value = '';
+    document.getElementById('roof').value = '';
+    ['bath','toilet','kitchen','wash'].forEach(function(n){
+        document.getElementById(n).value = '';
+        var c = document.getElementById('img_' + n);
+        if (c) {
+            var cards = c.querySelectorAll('.wi-card');
+            for (var i = 0; i < cards.length; i++) { cards[i].style.display = 'none'; cards[i].classList.remove('active'); }
+        }
+        var note = document.getElementById('note_' + n);
+        if (note) note.classList.remove('show');
+    });
+    ['solar','garage','builtin','aircon','camera','exterior'].forEach(function(n){ document.getElementById(n).value = '0'; });
+    document.getElementById('exteriorM2').value = 0;
+    document.getElementById('floorheat').value = '0';
+    document.getElementById('floorheatM2').value = 0;
+    calc();
+}
+
+calc();
+</script>
+</body>
+</html>

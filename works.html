@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>施工事例｜たにもとの家（広島県 江田島）</title>
+    <meta name="description" content="たにもとの家の施工事例。新築・リフォームの実績を写真でご覧いただけます。" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        :root{--cream:#faf8f5;--white:#fff;--warm-50:#f5f0eb;--warm-100:#e8e0d8;--warm-200:#d4c8ba;--warm-600:#7a6b5d;--warm-700:#5c4f43;--warm-800:#3d3429;--warm-900:#2a231b;--accent:#8b7355;--accent-light:#b09a7c;--shadow-sm:0 1px 3px rgba(0,0,0,.06);--shadow-md:0 4px 20px rgba(0,0,0,.08);--shadow-lg:0 12px 40px rgba(0,0,0,.1);--radius:12px;--radius-lg:20px}
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+        body{font-family:"Noto Sans JP",system-ui,sans-serif;color:var(--warm-800);background:var(--cream);line-height:1.8;-webkit-font-smoothing:antialiased}
+        a{color:inherit;text-decoration:none}
+        img{display:block;max-width:100%}
+        .container{width:min(1140px,90vw);margin:0 auto}
+
+        /* Header */
+        .header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,248,245,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.06);transition:box-shadow .3s}
+        .header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.08)}
+        .header__inner{display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:16px}
+        .brand{display:flex;align-items:center;gap:12px}
+        .brand__main{font-family:"Noto Serif JP",serif;font-size:22px;font-weight:700;color:var(--warm-900);letter-spacing:.06em}
+        .brand__sub{font-size:11px;font-weight:500;color:var(--accent);letter-spacing:.12em;border:1px solid var(--warm-100);padding:4px 12px;border-radius:999px}
+        .nav{display:flex;align-items:center;gap:6px}
+        .nav a{font-size:14px;font-weight:500;color:var(--warm-600);padding:8px 16px;border-radius:8px;transition:all .2s}
+        .nav a:hover{color:var(--warm-900);background:rgba(0,0,0,.04)}
+        .nav__cta{background:var(--warm-900)!important;color:var(--white)!important;font-weight:700!important;padding:10px 20px!important;border-radius:999px!important}
+        .nav__cta:hover{background:var(--warm-700)!important}
+        .hamburger{display:none;background:none;border:none;cursor:pointer;width:32px;height:32px;position:relative}
+        .hamburger span{display:block;width:20px;height:2px;background:var(--warm-800);border-radius:2px;position:absolute;left:6px;transition:all .3s}
+        .hamburger span:nth-child(1){top:9px}
+        .hamburger span:nth-child(2){top:15px}
+        .hamburger span:nth-child(3){top:21px}
+        @media(max-width:768px){
+            .hamburger{display:block}
+            .nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--white);flex-direction:column;padding:16px;border-bottom:1px solid var(--warm-100);box-shadow:var(--shadow-md)}
+            .nav.open{display:flex}
+            .nav a{width:100%;text-align:center;padding:14px;font-size:16px}
+        }
+
+        /* Page Hero */
+        .page-hero{margin-top:68px;padding:64px 0 48px;background:var(--white);border-bottom:1px solid var(--warm-100)}
+        .page-hero__label{font-size:12px;font-weight:500;letter-spacing:.16em;color:var(--accent);margin-bottom:12px}
+        .page-hero__title{font-family:"Noto Serif JP",serif;font-size:clamp(26px,4vw,36px);font-weight:700;letter-spacing:.04em;margin-bottom:12px}
+        .page-hero__lead{font-size:15px;color:var(--warm-600);max-width:600px}
+
+        /* Section */
+        .section{padding:72px 0}
+        .section--white{background:var(--white)}
+        .section__header{text-align:center;margin-bottom:48px}
+        .section__label{display:inline-block;font-size:12px;font-weight:500;letter-spacing:.16em;color:var(--accent);margin-bottom:12px}
+        .section__title{font-family:"Noto Serif JP",serif;font-size:clamp(22px,3.5vw,28px);font-weight:700;letter-spacing:.04em}
+
+        /* Gallery Grid */
+        .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+        .gallery-item{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/3;cursor:pointer;box-shadow:var(--shadow-sm);transition:all .35s}
+        .gallery-item:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+        .gallery-item.featured{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+        .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+        .gallery-item:hover img{transform:scale(1.05)}
+        .gallery-item__overlay{position:absolute;inset:0;background:linear-gradient(transparent 50%,rgba(0,0,0,.6));opacity:0;transition:opacity .3s}
+        .gallery-item:hover .gallery-item__overlay{opacity:1}
+        .gallery-item__caption{position:absolute;bottom:0;left:0;right:0;padding:20px;color:#fff;transform:translateY(8px);opacity:0;transition:all .3s}
+        .gallery-item:hover .gallery-item__caption{transform:translateY(0);opacity:1}
+        .gallery-item__caption h3{font-size:16px;font-weight:700;margin-bottom:4px}
+        .gallery-item__caption p{font-size:13px;opacity:.85}
+        @media(max-width:768px){
+            .gallery-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+            .gallery-item.featured{grid-column:span 2;grid-row:span 1;aspect-ratio:16/9}
+            .gallery-item__overlay{opacity:1}
+            .gallery-item__caption{transform:translateY(0);opacity:1}
+        }
+        @media(max-width:480px){
+            .gallery-grid{grid-template-columns:1fr}
+            .gallery-item.featured{grid-column:span 1}
+        }
+
+        /* Voices */
+        .voices-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+        @media(max-width:768px){.voices-grid{grid-template-columns:1fr}}
+        .voice-card{background:var(--white);border:1px solid var(--warm-100);border-radius:var(--radius-lg);padding:28px 24px;box-shadow:var(--shadow-sm)}
+        .voice-card__meta{font-size:12px;font-weight:600;color:var(--accent);margin-bottom:12px;letter-spacing:.06em}
+        .voice-card__text{font-size:15px;line-height:1.9;color:var(--warm-700)}
+
+        /* CTA */
+        .cta-band{background:var(--warm-900);padding:56px 0;text-align:center;color:#fff}
+        .cta-band h2{font-family:"Noto Serif JP",serif;font-size:clamp(20px,3vw,26px);font-weight:700;margin-bottom:10px}
+        .cta-band p{color:rgba(255,255,255,.7);font-size:14px;margin-bottom:28px}
+        .btn-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:700;padding:14px 28px;border-radius:999px;border:none;cursor:pointer;transition:all .25s;letter-spacing:.02em}
+        .btn--primary{background:#fff;color:var(--warm-900)}
+        .btn--primary:hover{background:var(--warm-50);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15)}
+        .btn--outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4)}
+        .btn--outline:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+        .btn--dark{background:var(--warm-900);color:#fff}
+        .btn--dark:hover{background:var(--warm-700);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+
+        /* Footer */
+        .footer{background:var(--warm-900);color:rgba(255,255,255,.5);padding:40px 0 28px;font-size:13px}
+        .footer__inner{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;flex-wrap:wrap}
+        .footer__brand{font-family:"Noto Serif JP",serif;font-size:18px;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:8px}
+        .footer__links{display:flex;gap:24px;flex-wrap:wrap}
+        .footer__links a{transition:color .2s}
+        .footer__links a:hover{color:rgba(255,255,255,.85)}
+        .footer__copy{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);text-align:center}
+
+        .fade-up{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+        .fade-up.visible{opacity:1;transform:translateY(0)}
+    </style>
+</head>
+<body>
+
+<header class="header" id="top">
+    <div class="container header__inner">
+        <a href="./index.html" class="brand">
+            <div class="brand__main">たにもとの家</div>
+            <div class="brand__sub">江田島の匠</div>
+        </a>
+        <button class="hamburger" onclick="document.querySelector('.nav').classList.toggle('open')" aria-label="メニュー">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="nav">
+            <a href="./works.html">施工事例</a>
+            <a href="./about.html">会社紹介</a>
+            <a href="./estimate.html">概算見積り</a>
+            <a href="./contact.html" class="nav__cta">お問い合わせ</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+<!-- Page Hero -->
+<section class="page-hero">
+    <div class="container">
+        <div class="page-hero__label">WORKS</div>
+        <h1 class="page-hero__title">施工事例</h1>
+        <p class="page-hero__lead">実際に手がけた住まいの写真です。素材の質感や空間の雰囲気をご覧ください。</p>
+    </div>
+</section>
+
+<!-- Gallery -->
+<section class="section">
+    <div class="container">
+        <div class="gallery-grid fade-up">
+            <div class="gallery-item featured">
+                <img src="./images/IMG_6584.PNG" alt="LDK俯瞰" loading="lazy" />
+                <div class="gallery-item__overlay"></div>
+                <div class="gallery-item__caption">
+                    <h3>LDK俯瞰</h3>
+                    <p>吹き抜けから見下ろす開放的なリビング・ダイニング・キッチン</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="./images/IMG_6577.JPG" alt="畳のワークスペース" loading="lazy" />
+                <div class="gallery-item__overlay"></div>
+                <div class="gallery-item__caption">
+                    <h3>畳のワークスペース</h3>
+                    <p>落ち着いた和の空間で集中できる書斎</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="./images/IMG_6578.JPG" alt="木の梁が美しい天井" loading="lazy" />
+                <div class="gallery-item__overlay"></div>
+                <div class="gallery-item__caption">
+                    <h3>木の梁が美しい天井</h3>
+                    <p>重厚な梁が空間に力強さと温かみを</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="./images/IMG_6583.PNG" alt="吹き抜けと箱階段" loading="lazy" />
+                <div class="gallery-item__overlay"></div>
+                <div class="gallery-item__caption">
+                    <h3>吹き抜けと箱階段</h3>
+                    <p>収納を兼ねた箱階段と高い吹き抜け</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="./images/IMG_6580.JPG" alt="和室" loading="lazy" />
+                <div class="gallery-item__overlay"></div>
+                <div class="gallery-item__caption">
+                    <h3>和室</h3>
+                    <p>市松模様の畳と杉板天井の美しい和室</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="./images/IMG_6579.JPG" alt="玄関" loading="lazy" />
+                <div class="gallery-item__overlay"></div>
+                <div class="gallery-item__caption">
+                    <h3>玄関</h3>
+                    <p>木の温もりを感じる広々とした玄関</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="./images/IMG_6582.PNG" alt="ロフトの廊下" loading="lazy" />
+                <div class="gallery-item__overlay"></div>
+                <div class="gallery-item__caption">
+                    <h3>ロフトの廊下</h3>
+                    <p>無垢材の床と梁が織りなす空間</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="./images/IMG_6585.PNG" alt="梁と吹き抜け" loading="lazy" />
+                <div class="gallery-item__overlay"></div>
+                <div class="gallery-item__caption">
+                    <h3>梁と吹き抜け</h3>
+                    <p>見上げる迫力の木組み構造</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="./images/IMG_6581.JPG" alt="オフィススペース" loading="lazy" />
+                <div class="gallery-item__overlay"></div>
+                <div class="gallery-item__caption">
+                    <h3>オフィススペース</h3>
+                    <p>機能的で快適なワーキング環境</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Voices -->
+<section class="section section--white">
+    <div class="container">
+        <div class="section__header fade-up">
+            <div class="section__label">VOICES</div>
+            <h2 class="section__title">お客様の声</h2>
+        </div>
+        <div class="voices-grid fade-up">
+            <div class="voice-card">
+                <div class="voice-card__meta">30代 / 新築</div>
+                <div class="voice-card__text">「要望が言語化できていない状態でも、整理して提案してくれました。」</div>
+            </div>
+            <div class="voice-card">
+                <div class="voice-card__meta">40代 / リノベーション</div>
+                <div class="voice-card__text">「暮らし始めてから"動線が楽"を実感。細部の仕上がりが丁寧でした。」</div>
+            </div>
+            <div class="voice-card">
+                <div class="voice-card__meta">店舗 / 内装</div>
+                <div class="voice-card__text">「限られた面積でも居心地がよく、素材の選び方が上品で好きです。」</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band">
+    <div class="container">
+        <h2>写真を見て「いいかも」と思ったら</h2>
+        <p>まずはお気軽にご相談ください。概算の確認もできます。</p>
+        <div class="btn-group">
+            <a class="btn btn--primary" href="./contact.html">無料相談・お問い合わせ</a>
+            <a class="btn btn--outline" href="./estimate.html">簡単見積りシミュレーション</a>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer__inner">
+            <div>
+                <div class="footer__brand">たにもとの家</div>
+                <div>広島県 江田島</div>
+            </div>
+            <div class="footer__links">
+                <a href="./index.html">トップ</a>
+                <a href="./works.html">施工事例</a>
+                <a href="./estimate.html">概算見積り</a>
+                <a href="./contact.html">お問い合わせ</a>
+            </div>
+        </div>
+        <div class="footer__copy">&copy; たにもとの家 <a href="./admin.html" style="opacity:.35;font-size:11px;margin-left:16px">スタッフ専用</a></div>
+    </div>
+</footer>
+
+<script>
+const header=document.querySelector('.header');
+window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.scrollY>10)});
+const observer=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:.15});
+document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+document.querySelectorAll('.nav a').forEach(a=>{a.addEventListener('click',()=>document.querySelector('.nav').classList.remove('open'))});
+
+// Load custom gallery images from admin
+(function(){
+    var imgs = document.querySelectorAll('.gallery-item img');
+    for (var i = 0; i < imgs.length; i++) {
+        var data = localStorage.getItem('tanimoto_admin_img_works_' + i);
+        if (data) imgs[i].src = data;
+    }
+})();
+</script>
+</body>
+</html>

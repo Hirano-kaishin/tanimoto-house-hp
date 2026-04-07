@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>お問い合わせ｜たにもとの家（広島県 江田島）</title>
+    <meta name="description" content="たにもとの家へのお問い合わせ。新築・リフォームのご相談はお気軽にどうぞ。" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        :root{--cream:#faf8f5;--white:#fff;--warm-50:#f5f0eb;--warm-100:#e8e0d8;--warm-200:#d4c8ba;--warm-600:#7a6b5d;--warm-700:#5c4f43;--warm-800:#3d3429;--warm-900:#2a231b;--accent:#8b7355;--accent-light:#b09a7c;--shadow-sm:0 1px 3px rgba(0,0,0,.06);--shadow-md:0 4px 20px rgba(0,0,0,.08);--radius:12px;--radius-lg:20px}
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+        body{font-family:"Noto Sans JP",system-ui,sans-serif;color:var(--warm-800);background:var(--cream);line-height:1.8;-webkit-font-smoothing:antialiased}
+        a{color:inherit;text-decoration:none}
+        .container{width:min(1140px,90vw);margin:0 auto}
+
+        .header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,248,245,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.06);transition:box-shadow .3s}
+        .header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.08)}
+        .header__inner{display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:16px}
+        .brand{display:flex;align-items:center;gap:12px}
+        .brand__main{font-family:"Noto Serif JP",serif;font-size:22px;font-weight:700;color:var(--warm-900);letter-spacing:.06em}
+        .brand__sub{font-size:11px;font-weight:500;color:var(--accent);letter-spacing:.12em;border:1px solid var(--warm-100);padding:4px 12px;border-radius:999px}
+        .nav{display:flex;align-items:center;gap:6px}
+        .nav a{font-size:14px;font-weight:500;color:var(--warm-600);padding:8px 16px;border-radius:8px;transition:all .2s}
+        .nav a:hover{color:var(--warm-900);background:rgba(0,0,0,.04)}
+        .nav__cta{background:var(--warm-900)!important;color:var(--white)!important;font-weight:700!important;padding:10px 20px!important;border-radius:999px!important}
+        .nav__cta:hover{background:var(--warm-700)!important}
+        .hamburger{display:none;background:none;border:none;cursor:pointer;width:32px;height:32px;position:relative}
+        .hamburger span{display:block;width:20px;height:2px;background:var(--warm-800);border-radius:2px;position:absolute;left:6px;transition:all .3s}
+        .hamburger span:nth-child(1){top:9px}
+        .hamburger span:nth-child(2){top:15px}
+        .hamburger span:nth-child(3){top:21px}
+        @media(max-width:768px){
+            .hamburger{display:block}
+            .nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--white);flex-direction:column;padding:16px;border-bottom:1px solid var(--warm-100);box-shadow:var(--shadow-md)}
+            .nav.open{display:flex}
+            .nav a{width:100%;text-align:center;padding:14px;font-size:16px}
+        }
+
+        .page-hero{margin-top:68px;padding:64px 0 48px;background:var(--white);border-bottom:1px solid var(--warm-100)}
+        .page-hero__label{font-size:12px;font-weight:500;letter-spacing:.16em;color:var(--accent);margin-bottom:12px}
+        .page-hero__title{font-family:"Noto Serif JP",serif;font-size:clamp(26px,4vw,36px);font-weight:700;letter-spacing:.04em;margin-bottom:12px}
+        .page-hero__lead{font-size:15px;color:var(--warm-600);max-width:600px}
+
+        /* Contact Layout */
+        .contact-grid{display:grid;grid-template-columns:1fr 360px;gap:40px;align-items:start;padding:56px 0 80px}
+        @media(max-width:860px){.contact-grid{grid-template-columns:1fr;gap:32px}}
+
+        /* Form */
+        .form-panel{background:var(--white);border:1px solid var(--warm-100);border-radius:var(--radius-lg);padding:36px 32px;box-shadow:var(--shadow-sm)}
+        .form-panel h2{font-size:18px;font-weight:700;margin-bottom:24px}
+        .field{margin-bottom:20px}
+        .field label{display:block;font-size:14px;font-weight:700;margin-bottom:6px}
+        .field .required{color:#c45;font-size:12px;margin-left:4px}
+        .field input,.field select,.field textarea{
+            width:100%;padding:12px 14px;border:1px solid var(--warm-200);border-radius:10px;
+            background:var(--white);color:var(--warm-800);font-size:15px;
+            font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s;
+        }
+        .field input:focus,.field select:focus,.field textarea:focus{
+            border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,115,85,.12);
+        }
+        .field textarea{resize:vertical;min-height:140px;line-height:1.7}
+
+        .submit-btn{
+            width:100%;padding:16px;border:none;border-radius:999px;
+            background:var(--warm-900);color:#fff;font-size:16px;font-weight:700;
+            font-family:inherit;cursor:pointer;transition:all .25s;
+        }
+        .submit-btn:hover{background:var(--warm-700);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+        .form-note{margin-top:16px;font-size:12px;color:var(--warm-600);text-align:center}
+
+        /* Info sidebar */
+        .info-sidebar{display:grid;gap:20px}
+        .info-card{background:var(--white);border:1px solid var(--warm-100);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-sm)}
+        .info-card h3{font-size:15px;font-weight:700;margin-bottom:12px;color:var(--warm-900)}
+        .info-card p{font-size:14px;color:var(--warm-600);line-height:1.9;margin-bottom:8px}
+        .info-card p:last-child{margin-bottom:0}
+        .info-card a{color:var(--accent);font-weight:600;border-bottom:1px solid var(--warm-200);transition:border-color .2s}
+        .info-card a:hover{border-color:var(--accent)}
+
+        .est-banner{background:var(--warm-50);border:1px solid var(--warm-200);border-radius:var(--radius-lg);padding:24px;text-align:center}
+        .est-banner p{font-size:14px;color:var(--warm-700);margin-bottom:14px}
+        .est-banner .btn{display:inline-flex;align-items:center;font-size:14px;font-weight:700;padding:12px 24px;border-radius:999px;background:var(--warm-900);color:#fff;transition:all .25s}
+        .est-banner .btn:hover{background:var(--warm-700);transform:translateY(-1px)}
+
+        .footer{background:var(--warm-900);color:rgba(255,255,255,.5);padding:40px 0 28px;font-size:13px}
+        .footer__inner{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;flex-wrap:wrap}
+        .footer__brand{font-family:"Noto Serif JP",serif;font-size:18px;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:8px}
+        .footer__links{display:flex;gap:24px;flex-wrap:wrap}
+        .footer__links a{transition:color .2s}
+        .footer__links a:hover{color:rgba(255,255,255,.85)}
+        .footer__copy{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);text-align:center}
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container header__inner">
+        <a href="./index.html" class="brand">
+            <div class="brand__main">たにもとの家</div>
+            <div class="brand__sub">江田島の匠</div>
+        </a>
+        <button class="hamburger" onclick="document.querySelector('.nav').classList.toggle('open')" aria-label="メニュー">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="nav">
+            <a href="./works.html">施工事例</a>
+            <a href="./about.html">会社紹介</a>
+            <a href="./estimate.html">概算見積り</a>
+            <a href="./contact.html" class="nav__cta">お問い合わせ</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+<section class="page-hero">
+    <div class="container">
+        <div class="page-hero__label">CONTACT</div>
+        <h1 class="page-hero__title">お問い合わせ</h1>
+        <p class="page-hero__lead">新築・リフォームのご相談はお気軽にどうぞ。ざっくりしたイメージでも大丈夫です。</p>
+    </div>
+</section>
+
+<div class="container contact-grid">
+    <!-- Form -->
+    <div class="form-panel">
+        <h2>お問い合わせフォーム</h2>
+        <form id="contactForm">
+            <div class="field">
+                <label for="name">お名前<span class="required">*必須</span></label>
+                <input id="name" type="text" placeholder="例：山田 太郎" required />
+            </div>
+            <div class="field">
+                <label for="email">メールアドレス<span class="required">*必須</span></label>
+                <input id="email" type="email" placeholder="例：taro@example.com" required />
+            </div>
+            <div class="field">
+                <label for="phone">電話番号</label>
+                <input id="phone" type="tel" placeholder="例：090-1234-5678" />
+            </div>
+            <div class="field">
+                <label for="category">ご相談内容</label>
+                <select id="category">
+                    <option value="新築">新築のご相談</option>
+                    <option value="リフォーム">リフォームのご相談</option>
+                    <option value="その他">その他</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="message">メッセージ<span class="required">*必須</span></label>
+                <textarea id="message" placeholder="ご要望やご質問をお気軽にお書きください。&#10;&#10;例：&#10;・平屋を考えています&#10;・予算は○○万円くらい&#10;・まだざっくりですが…" required></textarea>
+            </div>
+            <button class="submit-btn" type="submit">送信する</button>
+            <div class="form-note">※送信後、メールアプリが開きます。内容をご確認の上お送りください。</div>
+        </form>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="info-sidebar">
+        <div class="info-card">
+            <h3>お電話でのご相談</h3>
+            <p>お急ぎの場合はお電話ください。</p>
+            <p style="font-size:20px;font-weight:700;color:var(--warm-900)">000-0000-0000</p>
+            <p>受付：平日 9:00〜18:00</p>
+        </div>
+        <div class="info-card">
+            <h3>所在地</h3>
+            <p>広島県江田島市</p>
+            <p>江田島・広島近郊が対応エリアです。<br />遠方の方もまずはご相談ください。</p>
+        </div>
+        <div class="est-banner">
+            <p>まずは概算を確認してみませんか？</p>
+            <a class="btn" href="./estimate.html">簡単見積りシミュレーション</a>
+        </div>
+    </div>
+</div>
+
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer__inner">
+            <div>
+                <div class="footer__brand">たにもとの家</div>
+                <div>広島県 江田島</div>
+            </div>
+            <div class="footer__links">
+                <a href="./index.html">トップ</a>
+                <a href="./works.html">施工事例</a>
+                <a href="./estimate.html">概算見積り</a>
+                <a href="./contact.html">お問い合わせ</a>
+            </div>
+        </div>
+        <div class="footer__copy">&copy; たにもとの家 <a href="./admin.html" style="opacity:.35;font-size:11px;margin-left:16px">スタッフ専用</a></div>
+    </div>
+</footer>
+
+<script>
+// Header
+const header=document.querySelector('.header');
+window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.scrollY>10)});
+document.querySelectorAll('.nav a').forEach(a=>{a.addEventListener('click',()=>document.querySelector('.nav').classList.remove('open'))});
+
+// Form submit -> mailto
+document.getElementById('contactForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=document.getElementById('name').value.trim();
+    const email=document.getElementById('email').value.trim();
+    const phone=document.getElementById('phone').value.trim();
+    const category=document.getElementById('category').value;
+    const message=document.getElementById('message').value.trim();
+
+    const subject=encodeURIComponent(`【たにもとの家】お問合せ（${category}）`);
+    const body=encodeURIComponent(
+        `お名前：${name}\nメール：${email}\n電話：${phone||"未入力"}\n内容：${category}\n\nメッセージ：\n${message}`
+    );
+    // TODO: 実メールアドレスに差し替え
+    window.location.href=`mailto:info@example.com?subject=${subject}&body=${body}`;
+});
+</script>
+</body>
+</html>

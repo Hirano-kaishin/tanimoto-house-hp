@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>会社紹介｜たにもとの家（広島県 江田島）</title>
+    <meta name="description" content="代表・谷本シンジの設計思想、こだわり、会社概要。たにもとの家の会社紹介。" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        :root{--cream:#faf8f5;--white:#fff;--warm-50:#f5f0eb;--warm-100:#e8e0d8;--warm-200:#d4c8ba;--warm-600:#7a6b5d;--warm-700:#5c4f43;--warm-800:#3d3429;--warm-900:#2a231b;--accent:#8b7355;--accent-light:#b09a7c;--shadow-sm:0 1px 3px rgba(0,0,0,.06);--shadow-md:0 4px 20px rgba(0,0,0,.08);--radius:12px;--radius-lg:20px}
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+        body{font-family:"Noto Sans JP",system-ui,sans-serif;color:var(--warm-800);background:var(--cream);line-height:1.8;-webkit-font-smoothing:antialiased}
+        a{color:inherit;text-decoration:none}
+        img{display:block;max-width:100%}
+        .container{width:min(1140px,90vw);margin:0 auto}
+
+        .header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,248,245,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.06);transition:box-shadow .3s}
+        .header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.08)}
+        .header__inner{display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:16px}
+        .brand{display:flex;align-items:center;gap:12px}
+        .brand__main{font-family:"Noto Serif JP",serif;font-size:22px;font-weight:700;color:var(--warm-900);letter-spacing:.06em}
+        .brand__sub{font-size:11px;font-weight:500;color:var(--accent);letter-spacing:.12em;border:1px solid var(--warm-100);padding:4px 12px;border-radius:999px}
+        .nav{display:flex;align-items:center;gap:6px}
+        .nav a{font-size:14px;font-weight:500;color:var(--warm-600);padding:8px 16px;border-radius:8px;transition:all .2s}
+        .nav a:hover{color:var(--warm-900);background:rgba(0,0,0,.04)}
+        .nav__cta{background:var(--warm-900)!important;color:var(--white)!important;font-weight:700!important;padding:10px 20px!important;border-radius:999px!important}
+        .nav__cta:hover{background:var(--warm-700)!important}
+        .hamburger{display:none;background:none;border:none;cursor:pointer;width:32px;height:32px;position:relative}
+        .hamburger span{display:block;width:20px;height:2px;background:var(--warm-800);border-radius:2px;position:absolute;left:6px;transition:all .3s}
+        .hamburger span:nth-child(1){top:9px}
+        .hamburger span:nth-child(2){top:15px}
+        .hamburger span:nth-child(3){top:21px}
+        @media(max-width:768px){
+            .hamburger{display:block}
+            .nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--white);flex-direction:column;padding:16px;border-bottom:1px solid var(--warm-100);box-shadow:var(--shadow-md)}
+            .nav.open{display:flex}
+            .nav a{width:100%;text-align:center;padding:14px;font-size:16px}
+        }
+
+        .page-hero{margin-top:68px;padding:64px 0 48px;background:var(--white);border-bottom:1px solid var(--warm-100)}
+        .page-hero__label{font-size:12px;font-weight:500;letter-spacing:.16em;color:var(--accent);margin-bottom:12px}
+        .page-hero__title{font-family:"Noto Serif JP",serif;font-size:clamp(26px,4vw,36px);font-weight:700;letter-spacing:.04em;margin-bottom:12px}
+        .page-hero__lead{font-size:15px;color:var(--warm-600);max-width:600px}
+
+        .section{padding:72px 0}
+        .section--white{background:var(--white)}
+        .section__header{margin-bottom:40px}
+        .section__label{display:inline-block;font-size:12px;font-weight:500;letter-spacing:.16em;color:var(--accent);margin-bottom:10px}
+        .section__title{font-family:"Noto Serif JP",serif;font-size:clamp(22px,3.5vw,28px);font-weight:700;letter-spacing:.04em}
+
+        /* Message */
+        .message-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+        @media(max-width:768px){.message-grid{grid-template-columns:1fr;gap:24px}}
+        .message-photo{border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/3;background:var(--warm-100)}
+        .message-photo img{width:100%;height:100%;object-fit:cover}
+        .message-body h3{font-size:20px;font-weight:700;margin-bottom:8px}
+        .message-body .role{font-size:13px;color:var(--accent);font-weight:600;margin-bottom:16px}
+        .message-body p{font-size:15px;color:var(--warm-700);line-height:2;margin-bottom:16px}
+
+        /* Values */
+        .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+        @media(max-width:768px){.values-grid{grid-template-columns:1fr}}
+        .value-card{background:var(--white);border:1px solid var(--warm-100);border-radius:var(--radius-lg);padding:32px 24px;box-shadow:var(--shadow-sm);transition:all .3s}
+        .value-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+        .value-card__num{font-family:"Noto Serif JP",serif;font-size:32px;font-weight:700;color:var(--warm-100);margin-bottom:12px}
+        .value-card h3{font-size:17px;font-weight:700;margin-bottom:10px}
+        .value-card p{font-size:14px;color:var(--warm-600);line-height:1.9}
+
+        /* Company Info */
+        .info-table{width:100%;border-collapse:collapse;max-width:640px}
+        .info-table tr{border-bottom:1px solid var(--warm-100)}
+        .info-table th{text-align:left;font-weight:600;font-size:14px;color:var(--warm-600);padding:16px 24px 16px 0;width:120px;vertical-align:top}
+        .info-table td{font-size:15px;padding:16px 0}
+
+        .cta-band{background:var(--warm-900);padding:56px 0;text-align:center;color:#fff}
+        .cta-band h2{font-family:"Noto Serif JP",serif;font-size:clamp(20px,3vw,26px);font-weight:700;margin-bottom:10px}
+        .cta-band p{color:rgba(255,255,255,.7);font-size:14px;margin-bottom:28px}
+        .btn-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+        .btn{display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;padding:14px 28px;border-radius:999px;border:none;cursor:pointer;transition:all .25s}
+        .btn--primary{background:#fff;color:var(--warm-900)}
+        .btn--primary:hover{background:var(--warm-50);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15)}
+        .btn--outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4)}
+        .btn--outline:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+
+        .footer{background:var(--warm-900);color:rgba(255,255,255,.5);padding:40px 0 28px;font-size:13px}
+        .footer__inner{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;flex-wrap:wrap}
+        .footer__brand{font-family:"Noto Serif JP",serif;font-size:18px;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:8px}
+        .footer__links{display:flex;gap:24px;flex-wrap:wrap}
+        .footer__links a{transition:color .2s}
+        .footer__links a:hover{color:rgba(255,255,255,.85)}
+        .footer__copy{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);text-align:center}
+
+        .fade-up{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+        .fade-up.visible{opacity:1;transform:translateY(0)}
+    </style>
+</head>
+<body>
+
+<header class="header" id="top">
+    <div class="container header__inner">
+        <a href="./index.html" class="brand">
+            <div class="brand__main">たにもとの家</div>
+            <div class="brand__sub">江田島の匠</div>
+        </a>
+        <button class="hamburger" onclick="document.querySelector('.nav').classList.toggle('open')" aria-label="メニュー">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="nav">
+            <a href="./works.html">施工事例</a>
+            <a href="./about.html">会社紹介</a>
+            <a href="./estimate.html">概算見積り</a>
+            <a href="./contact.html" class="nav__cta">お問い合わせ</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+<section class="page-hero">
+    <div class="container">
+        <div class="page-hero__label">ABOUT</div>
+        <h1 class="page-hero__title">"暮らしの器"を、丁寧につくる。</h1>
+        <p class="page-hero__lead">たにもとの家は、住む人の"好き"や"癖"を大切にした設計・施工を行う、広島県江田島の工務店です。</p>
+    </div>
+</section>
+
+<!-- Representative -->
+<section class="section section--white">
+    <div class="container">
+        <div class="section__header fade-up">
+            <div class="section__label">MESSAGE</div>
+            <h2 class="section__title">代表挨拶</h2>
+        </div>
+        <div class="message-grid fade-up">
+            <div class="message-photo">
+                <img src="./images/IMG_6576.JPG" alt="たにもとの家 事務所" loading="lazy" />
+            </div>
+            <div class="message-body">
+                <h3>谷本 シンジ</h3>
+                <div class="role">代表・設計</div>
+                <p>私がこの仕事で大切にしているのは、「住む人の暮らしに寄り添う家づくり」です。</p>
+                <p>見た目のデザインだけでなく、動線・採光・収納・温熱環境を大切にし、そのうえで"ほんの少しの遊び心"を丁寧に仕込みます。毎日の暮らしが自然と心地よくなる――そんな住まいをお届けしたいと考えています。</p>
+                <p>江田島という豊かな自然の中で、地元の風土に合った家づくりを続けてきました。大手にはない、顔の見える距離感での対話を大切に、お客様と一緒に"理想の暮らし"を形にしていきます。</p>
+                <p>ざっくりしたイメージでも大丈夫です。まずはお気軽にお声がけください。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values -->
+<section class="section">
+    <div class="container">
+        <div class="section__header fade-up">
+            <div class="section__label">VALUES</div>
+            <h2 class="section__title">大切にしていること</h2>
+        </div>
+        <div class="values-grid fade-up">
+            <div class="value-card">
+                <div class="value-card__num">01</div>
+                <h3>暮らしから逆算する設計</h3>
+                <p>暮らしのクセ・家事動線・趣味の時間を丁寧にヒアリング。採光・風通し・収納計画で、ストレスの少ない住まいへ。</p>
+            </div>
+            <div class="value-card">
+                <div class="value-card__num">02</div>
+                <h3>素材の手触りと経年変化</h3>
+                <p>素材の質感と経年変化、メンテナンス性まで考えた提案。見た目だけでなく、触って暮らして心地よい素材選びを。</p>
+            </div>
+            <div class="value-card">
+                <div class="value-card__num">03</div>
+                <h3>現場の品質へのこだわり</h3>
+                <p>設計から施工まで一貫体制。現場での納まり・職人連携まで含めて"完成度"を追求します。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Company Info -->
+<section class="section section--white">
+    <div class="container">
+        <div class="section__header fade-up">
+            <div class="section__label">COMPANY</div>
+            <h2 class="section__title">会社概要</h2>
+        </div>
+        <table class="info-table fade-up">
+            <tr><th>屋号</th><td>たにもとの家</td></tr>
+            <tr><th>代表</th><td>谷本シンジ</td></tr>
+            <tr><th>所在地</th><td>広島県江田島市</td></tr>
+            <tr><th>事業内容</th><td>建築設計 / 新築 / リノベーション / 店舗・小規模施設</td></tr>
+            <tr><th>対応エリア</th><td>江田島・広島近郊（ご相談ください）</td></tr>
+            <tr><th>受付</th><td>平日 9:00〜18:00（目安）</td></tr>
+        </table>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band">
+    <div class="container">
+        <h2>まずは気軽にご相談ください</h2>
+        <p>ざっくりしたイメージでも大丈夫。話しながら一緒に整えていきましょう。</p>
+        <div class="btn-group">
+            <a class="btn btn--primary" href="./contact.html">無料相談・お問い合わせ</a>
+            <a class="btn btn--outline" href="./works.html">施工事例を見る</a>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer__inner">
+            <div>
+                <div class="footer__brand">たにもとの家</div>
+                <div>広島県 江田島</div>
+            </div>
+            <div class="footer__links">
+                <a href="./index.html">トップ</a>
+                <a href="./works.html">施工事例</a>
+                <a href="./estimate.html">概算見積り</a>
+                <a href="./contact.html">お問い合わせ</a>
+            </div>
+        </div>
+        <div class="footer__copy">&copy; たにもとの家 <a href="./admin.html" style="opacity:.35;font-size:11px;margin-left:16px">スタッフ専用</a></div>
+    </div>
+</footer>
+
+<script>
+const header=document.querySelector('.header');
+window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.scrollY>10)});
+const observer=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:.15});
+document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+document.querySelectorAll('.nav a').forEach(a=>{a.addEventListener('click',()=>document.querySelector('.nav').classList.remove('open'))});
+
+// Load custom representative photo from admin
+(function(){
+    var img = localStorage.getItem('tanimoto_admin_img_about_rep');
+    if (img) {
+        var el = document.querySelector('.message-photo img');
+        if (el) el.src = img;
+    }
+})();
+</script>
+</body>
+</html>
