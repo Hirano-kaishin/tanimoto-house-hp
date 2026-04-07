@@ -115,6 +115,7 @@
         <a href="#sec-option">オプション金額</a>
         <a href="#sec-hero">トップページ</a>
         <a href="#sec-images">画像管理</a>
+        <a href="#sec-pw">パスワード変更</a>
     </div>
 </div>
 
@@ -370,13 +371,31 @@
         <span class="save-msg" id="msg_images">保存しました</span>
     </div>
 
+    <!-- パスワード変更 -->
+    <div class="section" id="sec-pw">
+        <h2>パスワード変更</h2>
+        <p class="desc">管理ページのログインパスワードを変更します</p>
+        <div class="edit-panel">
+            <div class="edit-panel__header">パスワード設定</div>
+            <div class="edit-panel__body">
+                <div class="form-row"><label>現在のパスワード</label><input type="password" id="pw_current" placeholder="現在のパスワード" /></div>
+                <div class="form-row"><label>新しいパスワード</label><input type="password" id="pw_new" placeholder="新しいパスワード" /></div>
+                <div class="form-row"><label>新しいパスワード（確認）</label><input type="password" id="pw_confirm" placeholder="もう一度入力" /></div>
+            </div>
+        </div>
+        <button class="btn-save" onclick="changePassword()">パスワードを変更</button>
+        <span class="save-msg" id="msg_pw">変更しました</span>
+        <span class="save-msg" id="msg_pw_err" style="color:var(--red)"></span>
+    </div>
+
 </div>
 </div>
 
 <script>
 // ===== Password =====
 // ※パスワードは簡易的なクライアント側チェックです
-var ADMIN_PASS = '0000';
+var DEFAULT_PASS = '0000';
+var ADMIN_PASS = localStorage.getItem('tanimoto_admin_password') || DEFAULT_PASS;
 
 function tryLogin() {
     var input = document.getElementById('pwInput').value;
@@ -503,6 +522,42 @@ function loadImages() {
 
 // Load saved images on page load
 loadImages();
+
+// ===== Change Password =====
+function changePassword() {
+    var cur = document.getElementById('pw_current').value;
+    var nw = document.getElementById('pw_new').value;
+    var conf = document.getElementById('pw_confirm').value;
+    var msgOk = document.getElementById('msg_pw');
+    var msgErr = document.getElementById('msg_pw_err');
+    msgOk.classList.remove('show'); msgErr.classList.remove('show');
+
+    if (cur !== ADMIN_PASS) {
+        msgErr.textContent = '現在のパスワードが違います';
+        msgErr.classList.add('show');
+        setTimeout(function(){ msgErr.classList.remove('show'); }, 3000);
+        return;
+    }
+    if (!nw) {
+        msgErr.textContent = '新しいパスワードを入力してください';
+        msgErr.classList.add('show');
+        setTimeout(function(){ msgErr.classList.remove('show'); }, 3000);
+        return;
+    }
+    if (nw !== conf) {
+        msgErr.textContent = '新しいパスワードが一致しません';
+        msgErr.classList.add('show');
+        setTimeout(function(){ msgErr.classList.remove('show'); }, 3000);
+        return;
+    }
+    localStorage.setItem('tanimoto_admin_password', nw);
+    ADMIN_PASS = nw;
+    document.getElementById('pw_current').value = '';
+    document.getElementById('pw_new').value = '';
+    document.getElementById('pw_confirm').value = '';
+    msgOk.classList.add('show');
+    setTimeout(function(){ msgOk.classList.remove('show'); }, 2000);
+}
 
 // Smooth scroll for nav
 document.querySelectorAll('.admin-nav a').forEach(function(a){
