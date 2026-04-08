@@ -483,7 +483,7 @@ File: app.js
             const estimateText = buildEstimateTextFromSnapshot(snap);
 
             const subject = encodeURIComponent(
-                `【たにもとの家】お問合せ（${category}）`,
+                `【たにもとのいえ】お問合せ（${category}）`,
             );
             const body = encodeURIComponent(
                 `お名前：${name}\n` +
