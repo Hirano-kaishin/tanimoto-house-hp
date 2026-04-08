@@ -161,7 +161,6 @@
                 <textarea id="message" placeholder="ご要望やご質問をお気軽にお書きください。&#10;&#10;例：&#10;・平屋を考えています&#10;・予算は○○万円くらい&#10;・まだざっくりですが…" required></textarea>
             </div>
             <button class="submit-btn" type="submit">送信する</button>
-            <div class="form-note">※送信後、メールアプリが開きます。内容をご確認の上お送りください。</div>
         </form>
     </div>
 
@@ -221,7 +220,7 @@ document.getElementById('contactForm').addEventListener('submit',async e=>{
 
     try{
         await fetch(GAS_URL,{method:'POST',body:JSON.stringify(data)});
-        e.target.innerHTML='<div style="text-align:center;padding:40px 0"><h3 style="font-size:20px;margin-bottom:12px">送信完了しました</h3><p style="color:var(--warm-600);font-size:14px">お問い合わせありがとうございます。<br>内容を確認の上、折り返しご連絡いたします。</p></div>';
+        e.target.innerHTML='<div style="text-align:center;padding:40px 0"><h3 style="font-size:20px;margin-bottom:12px">送信完了しました</h3><p style="color:var(--warm-600);font-size:14px">お問い合わせありがとうございます。<br>内容を確認の上、折り返しご連絡いたします。</p><a href="./index.html" style="display:inline-block;margin-top:24px;padding:14px 32px;background:var(--warm-900);color:#fff;border-radius:999px;font-size:14px;font-weight:700">ホームへ戻る</a></div>';
     }catch(err){
         btn.textContent=origText;
         btn.disabled=false;

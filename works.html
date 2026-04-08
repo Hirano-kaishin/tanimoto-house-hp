@@ -77,8 +77,8 @@
             .gallery-item.featured{grid-column:span 1}
             .brand__main{font-size:18px}
             .brand__sub{font-size:10px;padding:3px 8px}
-            .section{padding:48px 0}
-            .page-hero{padding:48px 0 32px}
+            .section{padding:32px 0}
+            .page-hero{padding:32px 0 20px}
         }
 
         /* Voices */
@@ -275,7 +275,7 @@
 <script>
 const header=document.querySelector('.header');
 window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.scrollY>10)});
-const observer=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:.15});
+const observer=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:0});
 document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
 document.querySelectorAll('.nav a').forEach(a=>{a.addEventListener('click',()=>document.querySelector('.nav').classList.remove('open'))});
 
