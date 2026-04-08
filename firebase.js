@@ -6,22 +6,19 @@
 // =============================================
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAviplO4Lf5F4SVxkBDz5OBAJFR0Q0kh70",
+  authDomain: "tanimoto-house.firebaseapp.com",
+  projectId: "tanimoto-house",
+  storageBucket: "tanimoto-house.firebasestorage.app",
+  messagingSenderId: "245293176188",
+  appId: "1:245293176188:web:ce9393b409a1257581c0f9"
 };
 
 // Firebase初期化
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 // =============================================
 // Firestore — データ読み込み
@@ -52,14 +49,4 @@ async function saveSiteData(section, data) {
   });
 }
 
-// =============================================
-// Storage — 画像アップロード
-// =============================================
-async function uploadImage(key, file) {
-  const storageRef = ref(storage, 'images/' + key + '_' + Date.now() + '.' + file.name.split('.').pop());
-  await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(storageRef);
-  return url;
-}
-
-export { db, storage, loadSiteData, saveSiteData, uploadImage };
+export { db, loadSiteData, saveSiteData };

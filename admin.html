@@ -391,11 +391,11 @@
 </div>
 </div>
 
-<script>
+<script type="module">
+import { loadSiteData, saveSiteData } from './firebase.js';
+
 // ===== Password =====
-// ※パスワードは簡易的なクライアント側チェックです
-var DEFAULT_PASS = '0000';
-var ADMIN_PASS = localStorage.getItem('tanimoto_admin_password') || DEFAULT_PASS;
+var ADMIN_PASS = localStorage.getItem('tanimoto_admin_password') || '0000';
 
 function tryLogin() {
     var input = document.getElementById('pwInput').value;
@@ -410,52 +410,43 @@ function tryLogin() {
         document.getElementById('pwInput').focus();
     }
 }
+window.tryLogin = tryLogin;
 
-// Auto-login if already authenticated in this session
 if (sessionStorage.getItem('admin_auth') === '1') {
     document.getElementById('loginOverlay').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
+    loadAllData();
 }
 
-// ===== Save / Load =====
-var STORAGE_KEY = 'tanimoto_admin_';
-
-function saveData(section) {
+// ===== Save — Firestore + localStorage fallback =====
+async function saveData(section) {
     var data = {};
-    var inputs = document.querySelectorAll('#sec-' + section + ' input, #sec-' + section + ' textarea');
-    for (var i = 0; i < inputs.length; i++) {
-        if (inputs[i].id) data[inputs[i].id] = inputs[i].value;
-    }
-    localStorage.setItem(STORAGE_KEY + section, JSON.stringify(data));
-
-    // Show saved message
+    document.querySelectorAll('#sec-' + section + ' input, #sec-' + section + ' textarea').forEach(function(el) {
+        if (el.id) data[el.id] = el.value;
+    });
+    // Save to Firestore
+    try { await saveSiteData(section, data); } catch(e) { console.warn('Firebase保存失敗:', e); }
+    // Also save to localStorage as fallback
+    localStorage.setItem('tanimoto_admin_' + section, JSON.stringify(data));
     var msg = document.getElementById('msg_' + section);
-    if (msg) {
-        msg.classList.add('show');
-        setTimeout(function(){ msg.classList.remove('show'); }, 2000);
-    }
+    if (msg) { msg.classList.add('show'); setTimeout(function(){ msg.classList.remove('show'); }, 2000); }
 }
+window.saveData = saveData;
 
-function loadAllData() {
+// ===== Load — Firestore優先、localStorage fallback =====
+async function loadAllData() {
+    var fbData = null;
+    try { fbData = await loadSiteData(); } catch(e) { console.warn('Firebase読込失敗:', e); }
     ['company','price','water','option','hero'].forEach(function(section) {
-        var raw = localStorage.getItem(STORAGE_KEY + section);
-        if (!raw) return;
-        try {
-            var data = JSON.parse(raw);
-            for (var key in data) {
-                var el = document.getElementById(key);
-                if (el) el.value = data[key];
-            }
-        } catch(e) {}
+        var d = (fbData && fbData[section]) || JSON.parse(localStorage.getItem('tanimoto_admin_' + section) || 'null');
+        if (!d) return;
+        for (var k in d) { var el = document.getElementById(k); if (el) el.value = d[k]; }
     });
 }
 
-// Load on page ready
-loadAllData();
-
-// ===== Image Management =====
+// ===== Image Management (localStorage only) =====
 var IMG_KEYS = ['hero_bg','about_rep','works_0','works_1','works_2','works_3','works_4','works_5','works_6','works_7','works_8'];
-var imgDataStore = {}; // temporary store before save
+var imgDataStore = {};
 
 function resizeImage(file, maxW, maxH, callback) {
     var reader = new FileReader();
@@ -463,15 +454,10 @@ function resizeImage(file, maxW, maxH, callback) {
         var img = new Image();
         img.onload = function() {
             var w = img.width, h = img.height;
-            if (w > maxW || h > maxH) {
-                var ratio = Math.min(maxW / w, maxH / h);
-                w = Math.round(w * ratio);
-                h = Math.round(h * ratio);
-            }
-            var canvas = document.createElement('canvas');
-            canvas.width = w; canvas.height = h;
-            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            callback(canvas.toDataURL('image/jpeg', 0.8));
+            if (w > maxW || h > maxH) { var r = Math.min(maxW/w,maxH/h); w=Math.round(w*r); h=Math.round(h*r); }
+            var c = document.createElement('canvas'); c.width=w; c.height=h;
+            c.getContext('2d').drawImage(img,0,0,w,h);
+            callback(c.toDataURL('image/jpeg',0.8));
         };
         img.src = e.target.result;
     };
@@ -480,48 +466,39 @@ function resizeImage(file, maxW, maxH, callback) {
 
 function previewImage(key, input) {
     if (!input.files || !input.files[0]) return;
-    resizeImage(input.files[0], 1200, 900, function(dataUrl) {
-        document.getElementById('prev_' + key).src = dataUrl;
-        imgDataStore[key] = dataUrl;
+    resizeImage(input.files[0], 1200, 900, function(url) {
+        document.getElementById('prev_' + key).src = url;
+        imgDataStore[key] = url;
     });
 }
+window.previewImage = previewImage;
 
 function resetImage(key, defaultSrc) {
     document.getElementById('prev_' + key).src = defaultSrc;
     document.getElementById('file_' + key).value = '';
-    imgDataStore[key] = ''; // empty string means "remove override"
+    imgDataStore[key] = '';
 }
+window.resetImage = resetImage;
 
 function saveImages() {
     for (var key in imgDataStore) {
         if (imgDataStore[key] === '') {
-            localStorage.removeItem(STORAGE_KEY + 'img_' + key);
+            localStorage.removeItem('tanimoto_admin_img_' + key);
         } else {
-            try {
-                localStorage.setItem(STORAGE_KEY + 'img_' + key, imgDataStore[key]);
-            } catch(e) {
-                alert('画像の保存に失敗しました。容量オーバーの可能性があります。画像を小さくしてお試しください。');
-                return;
-            }
+            try { localStorage.setItem('tanimoto_admin_img_' + key, imgDataStore[key]); }
+            catch(e) { alert('画像の保存に失敗しました。容量オーバーの可能性があります。'); return; }
         }
     }
     imgDataStore = {};
     var msg = document.getElementById('msg_images');
     if (msg) { msg.classList.add('show'); setTimeout(function(){ msg.classList.remove('show'); }, 2000); }
 }
+window.saveImages = saveImages;
 
-function loadImages() {
-    IMG_KEYS.forEach(function(key) {
-        var data = localStorage.getItem(STORAGE_KEY + 'img_' + key);
-        if (data) {
-            var el = document.getElementById('prev_' + key);
-            if (el) el.src = data;
-        }
-    });
-}
-
-// Load saved images on page load
-loadImages();
+IMG_KEYS.forEach(function(k) {
+    var d = localStorage.getItem('tanimoto_admin_img_' + k);
+    if (d) { var el = document.getElementById('prev_' + k); if (el) el.src = d; }
+});
 
 // ===== Change Password =====
 function changePassword() {
@@ -531,38 +508,19 @@ function changePassword() {
     var msgOk = document.getElementById('msg_pw');
     var msgErr = document.getElementById('msg_pw_err');
     msgOk.classList.remove('show'); msgErr.classList.remove('show');
-
-    if (cur !== ADMIN_PASS) {
-        msgErr.textContent = '現在のパスワードが違います';
-        msgErr.classList.add('show');
-        setTimeout(function(){ msgErr.classList.remove('show'); }, 3000);
-        return;
-    }
-    if (!nw) {
-        msgErr.textContent = '新しいパスワードを入力してください';
-        msgErr.classList.add('show');
-        setTimeout(function(){ msgErr.classList.remove('show'); }, 3000);
-        return;
-    }
-    if (nw !== conf) {
-        msgErr.textContent = '新しいパスワードが一致しません';
-        msgErr.classList.add('show');
-        setTimeout(function(){ msgErr.classList.remove('show'); }, 3000);
-        return;
-    }
+    if (cur !== ADMIN_PASS) { msgErr.textContent='現在のパスワードが違います'; msgErr.classList.add('show'); return; }
+    if (!nw) { msgErr.textContent='新しいパスワードを入力してください'; msgErr.classList.add('show'); return; }
+    if (nw !== conf) { msgErr.textContent='新しいパスワードが一致しません'; msgErr.classList.add('show'); return; }
     localStorage.setItem('tanimoto_admin_password', nw);
     ADMIN_PASS = nw;
-    document.getElementById('pw_current').value = '';
-    document.getElementById('pw_new').value = '';
-    document.getElementById('pw_confirm').value = '';
-    msgOk.classList.add('show');
-    setTimeout(function(){ msgOk.classList.remove('show'); }, 2000);
+    ['pw_current','pw_new','pw_confirm'].forEach(function(id) { document.getElementById(id).value = ''; });
+    msgOk.classList.add('show'); setTimeout(function(){ msgOk.classList.remove('show'); }, 2000);
 }
+window.changePassword = changePassword;
 
-// Smooth scroll for nav
-document.querySelectorAll('.admin-nav a').forEach(function(a){
-    a.addEventListener('click', function(){
-        document.querySelectorAll('.admin-nav a').forEach(function(x){ x.classList.remove('active'); });
+document.querySelectorAll('.admin-nav a').forEach(function(a) {
+    a.addEventListener('click', function() {
+        document.querySelectorAll('.admin-nav a').forEach(function(x) { x.classList.remove('active'); });
         a.classList.add('active');
     });
 });
