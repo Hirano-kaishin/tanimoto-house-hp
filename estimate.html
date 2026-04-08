@@ -62,7 +62,8 @@
         .water-images{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
         .wi-card{border:1px solid var(--warm-100);border-radius:10px;overflow:hidden;background:var(--white);display:none}
         .wi-card.active{display:block;border-color:var(--accent);box-shadow:0 0 0 2px rgba(139,115,85,.12)}
-        .wi-img{height:72px}
+        .wi-img{height:72px;position:relative;display:flex;align-items:center;justify-content:center}
+        .wi-img::after{content:'準備中';font-size:11px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.1em}
         .wi-body{padding:8px 10px}
         .wi-tag{font-size:9px;font-weight:700;color:var(--accent);letter-spacing:.08em}
         .wi-name{font-size:12px;font-weight:700;margin-top:1px}
