@@ -194,12 +194,12 @@
             <h2 class="section__title">会社概要</h2>
         </div>
         <table class="info-table fade-up">
-            <tr><th>屋号</th><td>たにもとのいえ</td></tr>
-            <tr><th>代表</th><td>谷本信志</td></tr>
-            <tr><th>所在地</th><td>広島県江田島市</td></tr>
-            <tr><th>事業内容</th><td>建築設計 / 新築 / リノベーション / 店舗・小規模施設</td></tr>
-            <tr><th>対応エリア</th><td>江田島・広島近郊（ご相談ください）</td></tr>
-            <tr><th>受付</th><td>平日 9:00〜18:00（目安）</td></tr>
+            <tr><th>屋号</th><td id="td_name">たにもとのいえ</td></tr>
+            <tr><th>代表</th><td id="td_rep">谷本信志</td></tr>
+            <tr><th>所在地</th><td id="td_address">広島県江田島市</td></tr>
+            <tr><th>事業内容</th><td id="td_biz">建築設計 / 新築 / リノベーション / 店舗・小規模施設</td></tr>
+            <tr><th>対応エリア</th><td id="td_area">江田島・広島近郊（ご相談ください）</td></tr>
+            <tr><th>受付</th><td id="td_hours">平日 9:00〜18:00（目安）</td></tr>
         </table>
     </div>
 </section>
@@ -234,12 +234,26 @@ document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
 document.querySelectorAll('.nav a').forEach(a=>{a.addEventListener('click',()=>document.querySelector('.nav').classList.remove('open'))});
 
 // Load custom representative photo from admin
-(function(){
-    var img = localStorage.getItem('tanimoto_admin_img_about_rep');
-    if (img) {
-        var el = document.querySelector('.message-photo img');
-        if (el) el.src = img;
-    }
+})();
+</script>
+<script type="module">
+import { loadSiteData, loadImageData } from './firebase.js';
+(async () => {
+    try {
+        const data = await loadSiteData();
+        if (data && data.company) {
+            const c = data.company;
+            const map = {td_name:'c_name', td_rep:'c_rep', td_address:'c_address', td_biz:'c_biz', td_area:'c_area', td_hours:'c_hours'};
+            for (const [tdId, key] of Object.entries(map)) {
+                if (c[key]) { const el = document.getElementById(tdId); if (el) el.textContent = c[key]; }
+            }
+        }
+        const imgs = await loadImageData();
+        if (imgs && imgs.about_rep) {
+            const el = document.querySelector('.message-photo img');
+            if (el) el.src = imgs.about_rep;
+        }
+    } catch(e) { console.warn('Firebase読込失敗:', e); }
 })();
 </script>
 </body>
