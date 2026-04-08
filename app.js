@@ -493,8 +493,7 @@ File: app.js
                     estimateText,
             );
 
-            // TODO: 実メールアドレスに差し替え
-            const to = "info@example.com";
+            const to = "tanimotonoie@gmail.com";
             window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
         });
     }

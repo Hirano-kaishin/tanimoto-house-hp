@@ -223,8 +223,7 @@ document.getElementById('contactForm').addEventListener('submit',e=>{
     const body=encodeURIComponent(
         `お名前：${name}\nメール：${email}\n電話：${phone||"未入力"}\n内容：${category}\n\nメッセージ：\n${message}`
     );
-    // TODO: 実メールアドレスに差し替え
-    window.location.href=`mailto:info@example.com?subject=${subject}&body=${body}`;
+    window.location.href=`mailto:tanimotonoie@gmail.com?subject=${subject}&body=${body}`;
 });
 </script>
 </body>
