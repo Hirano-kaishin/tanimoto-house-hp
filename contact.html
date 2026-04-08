@@ -210,12 +210,30 @@ document.getElementById('contactForm').addEventListener('submit',async e=>{
     btn.textContent='送信中...';
     btn.disabled=true;
 
+    // 見積シミュレーションの内容を取得
+    let estimateText='';
+    try{
+        const snap=JSON.parse(localStorage.getItem('tanimoto_estimate_v1')||'null');
+        if(snap&&snap.data){
+            const d=snap.data, r=snap.result;
+            estimateText='\n\n---\n【見積シミュレーション条件】\n'
+                +`延床面積：${d.area} 坪\n`
+                +`階数：${d.floors===1?'平屋':'2階建'}\n`
+                +`構造：${d.structure==='wood'?'木造':d.structure==='steel'?'鉄骨':'RC'}\n`
+                +`屋根：${d.roof==='tile'?'瓦':d.roof==='metal'?'ガルバリウム':'スレート'}\n`
+                +`\n【水回り】\n`
+                +`お風呂場：${d.bath}万円 / トイレ：${d.toilet}万円\n`
+                +`キッチン：${d.kitchen}万円 / 洗面台：${d.wash}万円\n`
+                +`\n概算総額（目安）：${r?r.totalYen.toLocaleString()+'円':'—'}\n`;
+        }
+    }catch(ex){}
+
     const data={
         name:document.getElementById('name').value.trim(),
         email:document.getElementById('email').value.trim(),
         phone:document.getElementById('phone').value.trim(),
         category:document.getElementById('category').value,
-        message:document.getElementById('message').value.trim()
+        message:document.getElementById('message').value.trim()+estimateText
     };
 
     try{
