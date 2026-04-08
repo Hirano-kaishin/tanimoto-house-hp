@@ -168,11 +168,11 @@
         }
         .hero h1 {
             font-family: "Noto Serif JP", serif;
-            font-size: clamp(30px, 5.5vw, 50px);
+            font-size: clamp(26px, 4.2vw, 50px);
             font-weight: 700;
-            line-height: 1.35;
+            line-height: 1.4;
             color: var(--white);
-            letter-spacing: 0.04em;
+            letter-spacing: 0.02em;
         }
         .hero__lead {
             margin-top: 24px;
@@ -192,12 +192,16 @@
             display: inline-flex; align-items: center; justify-content: center;
             gap: 8px;
             font-size: 14px; font-weight: 700;
-            padding: 14px 12px;
+            padding: 16px 8px;
             border-radius: 12px; border: none;
             cursor: pointer;
             transition: all 0.3s;
             letter-spacing: 0.02em;
             white-space: nowrap;
+        }
+        .hero__buttons .btn {
+            font-size: min(1.3vw, 14px);
+            padding: 16px 0;
         }
         .btn--glass {
             background: rgba(255,255,255,0.12);
