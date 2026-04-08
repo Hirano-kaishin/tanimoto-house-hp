@@ -319,13 +319,21 @@
 document.querySelectorAll('.nav a').forEach(a => {
     a.addEventListener('click', () => document.querySelector('.nav').classList.remove('open'));
 });
-
-// Load custom hero background from admin
-(function(){
-    var img = localStorage.getItem('tanimoto_admin_img_hero_bg');
-    if (img) {
-        document.querySelector('.hero__bg').style.backgroundImage = 'url(' + img + ')';
-    }
+</script>
+<script type="module">
+import { loadImageData, loadSiteData } from './firebase.js';
+(async () => {
+    try {
+        var imgs = await loadImageData();
+        if (imgs && imgs.hero_bg) {
+            document.querySelector('.hero__bg').style.backgroundImage = 'url(' + imgs.hero_bg + ')';
+        }
+        var data = await loadSiteData();
+        if (data && data.hero) {
+            if (data.hero.h_catch) { var h1 = document.querySelector('.hero h1'); if (h1) h1.innerHTML = data.hero.h_catch; }
+            if (data.hero.h_sub) { var lead = document.querySelector('.hero__lead'); if (lead) lead.innerHTML = data.hero.h_sub; }
+        }
+    } catch(e) { console.warn('Firebase読込失敗:', e); }
 })();
 </script>
 

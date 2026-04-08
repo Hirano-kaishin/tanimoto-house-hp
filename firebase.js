@@ -49,4 +49,28 @@ async function saveSiteData(section, data) {
   });
 }
 
-export { db, loadSiteData, saveSiteData };
+// =============================================
+// Firestore — 画像データ保存（base64）
+// =============================================
+async function saveImageData(key, dataUrl) {
+  const snap = await getDoc(doc(db, 'siteData', 'images'));
+  const current = snap.exists() ? snap.data() : {};
+  await setDoc(doc(db, 'siteData', 'images'), {
+    ...current,
+    [key]: dataUrl,
+    updatedAt: new Date().toISOString()
+  });
+}
+
+async function loadImageData() {
+  try {
+    const snap = await getDoc(doc(db, 'siteData', 'images'));
+    if (snap.exists()) return snap.data();
+    return null;
+  } catch(e) {
+    console.warn('画像データ読み込み失敗:', e);
+    return null;
+  }
+}
+
+export { db, loadSiteData, saveSiteData, saveImageData, loadImageData };

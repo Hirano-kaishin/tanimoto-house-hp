@@ -392,7 +392,7 @@
 </div>
 
 <script type="module">
-import { loadSiteData, saveSiteData } from './firebase.js';
+import { loadSiteData, saveSiteData, saveImageData, loadImageData } from './firebase.js';
 
 // ===== Password =====
 var ADMIN_PASS = localStorage.getItem('tanimoto_admin_password') || '0000';
@@ -480,25 +480,33 @@ function resetImage(key, defaultSrc) {
 }
 window.resetImage = resetImage;
 
-function saveImages() {
-    for (var key in imgDataStore) {
-        if (imgDataStore[key] === '') {
-            localStorage.removeItem('tanimoto_admin_img_' + key);
-        } else {
-            try { localStorage.setItem('tanimoto_admin_img_' + key, imgDataStore[key]); }
-            catch(e) { alert('画像の保存に失敗しました。容量オーバーの可能性があります。'); return; }
+async function saveImages() {
+    var saving = document.getElementById('msg_images');
+    if (saving) { saving.textContent = '保存中...'; saving.classList.add('show'); }
+    try {
+        for (var key in imgDataStore) {
+            await saveImageData(key, imgDataStore[key]);
         }
+        imgDataStore = {};
+        if (saving) { saving.textContent = '保存しました'; setTimeout(function(){ saving.classList.remove('show'); }, 2000); }
+    } catch(e) {
+        console.error('画像保存失敗:', e);
+        if (saving) { saving.textContent = '保存に失敗しました'; setTimeout(function(){ saving.classList.remove('show'); }, 3000); }
     }
-    imgDataStore = {};
-    var msg = document.getElementById('msg_images');
-    if (msg) { msg.classList.add('show'); setTimeout(function(){ msg.classList.remove('show'); }, 2000); }
 }
 window.saveImages = saveImages;
 
-IMG_KEYS.forEach(function(k) {
-    var d = localStorage.getItem('tanimoto_admin_img_' + k);
-    if (d) { var el = document.getElementById('prev_' + k); if (el) el.src = d; }
-});
+// Load images from Firestore on page load
+(async function() {
+    try {
+        var imgData = await loadImageData();
+        if (imgData) {
+            IMG_KEYS.forEach(function(k) {
+                if (imgData[k]) { var el = document.getElementById('prev_' + k); if (el) el.src = imgData[k]; }
+            });
+        }
+    } catch(e) { console.warn('画像読込失敗:', e); }
+})();
 
 // ===== Change Password =====
 function changePassword() {
