@@ -26,8 +26,7 @@
         .nav{display:flex;align-items:center;gap:6px}
         .nav a{font-size:14px;font-weight:500;color:var(--warm-600);padding:8px 16px;border-radius:8px;transition:all .2s}
         .nav a:hover{color:var(--warm-900);background:rgba(0,0,0,.04)}
-        .nav__cta{background:var(--warm-900)!important;color:var(--white)!important;font-weight:700!important;padding:10px 20px!important;border-radius:999px!important}
-        .nav__cta:hover{background:var(--warm-700)!important}
+        .nav__cta{background:transparent!important;color:inherit!important;font-weight:inherit!important;padding:inherit!important;border-radius:0!important}
         .hamburger{display:none;background:none;border:none;cursor:pointer;width:32px;height:32px;position:relative}
         .hamburger span{display:block;width:20px;height:2px;background:var(--warm-800);border-radius:2px;position:absolute;left:6px;transition:all .3s}
         .hamburger span:nth-child(1){top:9px}
@@ -63,6 +62,14 @@
         /* Values */
         .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
         @media(max-width:768px){.values-grid{grid-template-columns:1fr}}
+        @media(max-width:640px){
+            .info-table th{width:auto;display:block;padding:12px 0 4px;font-size:13px}
+            .info-table td{display:block;padding:0 0 12px;font-size:14px}
+            .section{padding:48px 0}
+            .page-hero{padding:48px 0 32px}
+            .brand__main{font-size:18px}
+            .brand__sub{font-size:10px;padding:3px 8px}
+        }
         .value-card{background:var(--white);border:1px solid var(--warm-100);border-radius:var(--radius-lg);padding:32px 24px;box-shadow:var(--shadow-sm);transition:all .3s}
         .value-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
         .value-card__num{font-family:"Noto Serif JP",serif;font-size:32px;font-weight:700;color:var(--warm-100);margin-bottom:12px}
@@ -110,8 +117,8 @@
         </button>
         <nav class="nav">
             <a href="./works.html">施工事例</a>
+            <a href="./estimate.html">見積シミュレーション</a>
             <a href="./about.html">会社紹介</a>
-            <a href="./estimate.html">概算見積り</a>
             <a href="./contact.html" class="nav__cta">お問い合わせ</a>
         </nav>
     </div>
@@ -219,7 +226,7 @@
             <div class="footer__links">
                 <a href="./index.html">トップ</a>
                 <a href="./works.html">施工事例</a>
-                <a href="./estimate.html">概算見積り</a>
+                <a href="./estimate.html">見積シミュレーション</a>
                 <a href="./contact.html">お問い合わせ</a>
             </div>
         </div>

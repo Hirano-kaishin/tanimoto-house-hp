@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>概算見積り（シミュレーション）｜たにもとの家</title>
+    <title>見積シミュレーション｜たにもとの家</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet" />
@@ -23,7 +23,7 @@
         .nav{display:flex;align-items:center;gap:6px}
         .nav a{font-size:14px;font-weight:500;color:var(--warm-600);padding:8px 16px;border-radius:8px;transition:all .2s}
         .nav a:hover{color:var(--warm-900);background:rgba(0,0,0,.04)}
-        .nav__cta{background:var(--warm-900)!important;color:var(--white)!important;font-weight:700!important;padding:10px 20px!important;border-radius:999px!important}
+        .nav__cta{background:transparent!important;color:inherit!important;font-weight:inherit!important;padding:inherit!important;border-radius:0!important}
         .hamburger{display:none;background:none;border:none;cursor:pointer;width:32px;height:32px;position:relative}
         .hamburger span{display:block;width:20px;height:2px;background:var(--warm-800);border-radius:2px;position:absolute;left:6px}
         .hamburger span:nth-child(1){top:9px}.hamburger span:nth-child(2){top:15px}.hamburger span:nth-child(3){top:21px}
@@ -73,6 +73,15 @@
         /* Two column main layout */
         .est-cols{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
         @media(max-width:920px){.est-cols{grid-template-columns:1fr}}
+        @media(max-width:480px){
+            .brand__main{font-size:18px}
+            .brand__sub{font-size:10px;padding:3px 8px}
+            .page-hero{padding:40px 0 28px}
+            .panel__body{padding:16px}
+            .panel__header{padding:12px 16px}
+            .total-box__value{font-size:26px}
+            .water-images{grid-template-columns:repeat(2,1fr)}
+        }
 
         .result-panel{position:sticky;top:84px}
         .total-box{padding:24px;background:var(--warm-50);border:1px solid var(--warm-200);border-radius:var(--radius)}
@@ -102,7 +111,7 @@
         <a href="./index.html" class="brand"><div class="brand__main">たにもとの家</div><div class="brand__sub">江田島の匠</div></a>
         <button class="hamburger" onclick="document.querySelector('.nav').classList.toggle('open')"><span></span><span></span><span></span></button>
         <nav class="nav">
-            <a href="./works.html">施工事例</a><a href="./about.html">会社紹介</a><a href="./estimate.html">概算見積り</a><a href="./contact.html" class="nav__cta">お問い合わせ</a>
+            <a href="./works.html">施工事例</a><a href="./estimate.html">見積シミュレーション</a><a href="./about.html">会社紹介</a><a href="./contact.html" class="nav__cta">お問い合わせ</a>
         </nav>
     </div>
 </header>
@@ -110,8 +119,9 @@
 <section class="page-hero">
     <div class="container">
         <div class="page-hero__label">ESTIMATE</div>
-        <h1 class="page-hero__title">概算見積りシミュレーション</h1>
+        <h1 class="page-hero__title">見積シミュレーション</h1>
         <p class="page-hero__lead">選択するだけで概算金額が自動計算されます。※正確な金額は現地確認後にご案内します。</p>
+        <p class="page-hero__note" style="margin-top:.8rem;font-size:.85rem;color:#888;">※ こちらはあくまで概算のシミュレーションです。実際の費用は建築条件・仕様により異なります。正式なお見積りはお問い合わせください。</p>
     </div>
 </section>
 
@@ -283,7 +293,7 @@
 
 <footer class="footer">
     <div class="container">
-        <div class="footer__inner"><div><div class="footer__brand">たにもとの家</div><div>広島県 江田島</div></div><div class="footer__links"><a href="./index.html">トップ</a><a href="./works.html">施工事例</a><a href="./estimate.html">概算見積り</a><a href="./contact.html">お問い合わせ</a></div></div>
+        <div class="footer__inner"><div><div class="footer__brand">たにもとの家</div><div>広島県 江田島</div></div><div class="footer__links"><a href="./index.html">トップ</a><a href="./works.html">施工事例</a><a href="./estimate.html">見積シミュレーション</a><a href="./contact.html">お問い合わせ</a></div></div>
         <div class="footer__copy">&copy; たにもとの家 <a href="./admin.html" style="opacity:.35;font-size:11px;margin-left:16px">スタッフ専用</a></div>
     </div>
 </footer>

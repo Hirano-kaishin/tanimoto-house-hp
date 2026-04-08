@@ -72,13 +72,12 @@
         }
         .nav a:hover { color: #fff; background: rgba(255,255,255,0.08); }
         .nav__cta {
-            background: var(--white) !important;
-            color: var(--warm-900) !important;
-            font-weight: 700 !important;
-            padding: 10px 22px !important;
-            border-radius: 999px !important;
+            background: transparent !important;
+            color: inherit !important;
+            font-weight: inherit !important;
+            padding: inherit !important;
+            border-radius: 0 !important;
         }
-        .nav__cta:hover { background: var(--warm-50) !important; }
 
         .hamburger {
             display: none; background: none; border: none; cursor: pointer;
@@ -103,6 +102,20 @@
             }
             .nav.open { display: flex; }
             .nav a { width: 100%; text-align: center; padding: 16px; font-size: 16px; }
+            .hero__content { max-width: 100%; padding: 60px 0 40px; }
+            .hero h1 { font-size: clamp(24px, 7vw, 36px); }
+            .hero__lead { font-size: 14px; }
+            .hero__buttons { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .btn { padding: 13px 10px; font-size: 13px; }
+            .hero__bg { animation: none; background-position: center center; }
+            .bottom-bar__inner { gap: 14px; font-size: 11px; flex-wrap: nowrap; white-space: nowrap; }
+        }
+        @media (max-width: 480px) {
+            .brand__main { font-size: 18px; }
+            .brand__sub { font-size: 10px; padding: 3px 8px; }
+            .hero h1 { font-size: 24px; }
+            .hero__kicker { font-size: 11px; }
+            .bottom-bar__inner { gap: 10px; font-size: 10px; }
         }
 
         /* ── Full-screen Hero ── */
@@ -163,19 +176,35 @@
         }
         .hero__buttons {
             margin-top: 36px;
-            display: flex; gap: 16px; flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
         }
 
         /* Buttons */
         .btn {
             display: inline-flex; align-items: center; justify-content: center;
             gap: 8px;
-            font-size: 15px; font-weight: 700;
-            padding: 16px 32px;
-            border-radius: 999px; border: none;
+            font-size: 14px; font-weight: 700;
+            padding: 14px 12px;
+            border-radius: 12px; border: none;
             cursor: pointer;
             transition: all 0.3s;
             letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+        .btn--glass {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .btn--glass:hover {
+            background: rgba(255,255,255,0.22);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
         .btn--primary {
             background: var(--white);
@@ -185,15 +214,6 @@
             background: var(--warm-50);
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-        }
-        .btn--outline {
-            background: transparent;
-            color: var(--white);
-            border: 1.5px solid rgba(255,255,255,0.35);
-        }
-        .btn--outline:hover {
-            border-color: rgba(255,255,255,0.7);
-            background: rgba(255,255,255,0.08);
         }
 
         /* ── Bottom bar ── */
@@ -247,8 +267,8 @@
         </button>
         <nav class="nav">
             <a href="./works.html">施工事例</a>
+            <a href="./estimate.html">見積シミュレーション</a>
             <a href="./about.html">会社紹介</a>
-            <a href="./estimate.html">概算見積り</a>
             <a href="./contact.html" class="nav__cta">お問い合わせ</a>
         </nav>
     </div>
@@ -266,8 +286,10 @@
             暮らしの"好き"が長く続く住まいをお届けします。
         </p>
         <div class="hero__buttons">
-            <a class="btn btn--primary" href="./contact.html">無料相談・お問い合わせ</a>
-            <a class="btn btn--outline" href="./works.html">施工事例を見る</a>
+            <a class="btn btn--glass" href="./works.html">施工事例</a>
+            <a class="btn btn--glass" href="./estimate.html">見積シミュレーション</a>
+            <a class="btn btn--glass" href="./about.html">会社紹介</a>
+            <a class="btn btn--glass" href="./contact.html">お問い合わせ</a>
         </div>
     </div>
 </section>
@@ -276,10 +298,7 @@
 <div class="bottom-bar">
     <div class="container bottom-bar__inner">
         <span>&copy; たにもとの家</span>
-        <a href="./works.html">施工事例</a>
-        <a href="./estimate.html">概算見積り</a>
-        <a href="./contact.html">お問い合わせ</a>
-        <a href="./admin.html" style="opacity:.35;font-size:11px">スタッフ専用</a>
+        <a href="./admin.html" style="opacity:.4;font-size:16px" title="スタッフ専用">&#9881;</a>
     </div>
 </div>
 
