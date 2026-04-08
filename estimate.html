@@ -402,5 +402,37 @@ function resetAll() {
 
 calc();
 </script>
+<script type="module">
+import { loadSiteData } from './firebase.js';
+(async () => {
+    try {
+        const data = await loadSiteData();
+        if (!data) return;
+        // 坪単価を反映
+        if (data.price) {
+            for (const k in data.price) {
+                const el = document.getElementById(k);
+                if (el) el.value = data.price[k];
+            }
+        }
+        // 水回り金額を反映
+        if (data.water) {
+            for (const k in data.water) {
+                const el = document.getElementById(k);
+                if (el) el.value = data.water[k];
+            }
+        }
+        // オプション金額を反映
+        if (data.option) {
+            for (const k in data.option) {
+                const el = document.getElementById(k);
+                if (el) el.value = data.option[k];
+            }
+        }
+        // 反映後に再計算
+        if (typeof calc === 'function') calc();
+    } catch(e) { console.warn('Firebase読込失敗:', e); }
+})();
+</script>
 </body>
 </html>

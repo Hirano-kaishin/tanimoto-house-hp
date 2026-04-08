@@ -169,13 +169,13 @@
         <div class="info-card">
             <h3>お電話でのご相談</h3>
             <p>お急ぎの場合はお電話ください。</p>
-            <p style="font-size:20px;font-weight:700;color:var(--warm-900)">090-4805-6309</p>
-            <p>受付：平日 9:00〜18:00</p>
+            <p id="ct_phone" style="font-size:20px;font-weight:700;color:var(--warm-900)">090-4805-6309</p>
+            <p>受付：<span id="ct_hours">平日 9:00〜18:00</span></p>
         </div>
         <div class="info-card">
             <h3>所在地</h3>
-            <p>広島県江田島市</p>
-            <p>江田島・広島近郊が対応エリアです。<br />遠方の方もまずはご相談ください。</p>
+            <p id="ct_address">広島県江田島市</p>
+            <p><span id="ct_area">江田島・広島近郊</span>が対応エリアです。<br />遠方の方もまずはご相談ください。</p>
         </div>
         <div class="est-banner">
             <p>まずは概算を確認してみませんか？</p>
@@ -245,6 +245,21 @@ document.getElementById('contactForm').addEventListener('submit',async e=>{
         alert('送信に失敗しました。時間をおいて再度お試しください。');
     }
 });
+</script>
+<script type="module">
+import { loadSiteData } from './firebase.js';
+(async () => {
+    try {
+        const data = await loadSiteData();
+        if (data && data.company) {
+            const c = data.company;
+            if (c.c_phone) { const el = document.getElementById('ct_phone'); if (el) el.textContent = c.c_phone; }
+            if (c.c_hours) { const el = document.getElementById('ct_hours'); if (el) el.textContent = c.c_hours; }
+            if (c.c_address) { const el = document.getElementById('ct_address'); if (el) el.textContent = c.c_address; }
+            if (c.c_area) { const el = document.getElementById('ct_area'); if (el) el.textContent = c.c_area; }
+        }
+    } catch(e) { console.warn('Firebase読込失敗:', e); }
+})();
 </script>
 </body>
 </html>

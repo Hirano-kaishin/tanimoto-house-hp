@@ -279,13 +279,19 @@ const observer=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)
 document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
 document.querySelectorAll('.nav a').forEach(a=>{a.addEventListener('click',()=>document.querySelector('.nav').classList.remove('open'))});
 
-// Load custom gallery images from admin
-(function(){
-    var imgs = document.querySelectorAll('.gallery-item img');
-    for (var i = 0; i < imgs.length; i++) {
-        var data = localStorage.getItem('tanimoto_admin_img_works_' + i);
-        if (data) imgs[i].src = data;
-    }
+})();
+</script>
+<script type="module">
+import { loadImageData } from './firebase.js';
+(async () => {
+    try {
+        const imgs = await loadImageData();
+        if (!imgs) return;
+        const galleryImgs = document.querySelectorAll('.gallery-item img');
+        for (let i = 0; i < galleryImgs.length; i++) {
+            if (imgs['works_' + i]) galleryImgs[i].src = imgs['works_' + i];
+        }
+    } catch(e) { console.warn('Firebase読込失敗:', e); }
 })();
 </script>
 </body>
