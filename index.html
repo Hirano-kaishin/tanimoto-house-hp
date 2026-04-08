@@ -141,9 +141,7 @@
         }
         .hero__overlay {
             position: absolute; inset: 0;
-            background:
-                linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.5) 100%),
-                linear-gradient(90deg, rgba(0,0,0,0.5) 0%, transparent 60%);
+            background: rgba(0,0,0,0.55);
         }
         .hero__content {
             position: relative; z-index: 2;
@@ -202,17 +200,17 @@
             padding: 16px 12px;
         }
         .btn--glass {
-            background: rgba(255,255,255,0.12);
+            background: rgba(180,150,100,0.25);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            color: var(--white);
-            border: 1px solid rgba(255,255,255,0.25);
+            color: #fff;
+            border: 1px solid rgba(200,170,120,0.45);
         }
         .btn--glass:hover {
-            background: rgba(255,255,255,0.22);
-            border-color: rgba(255,255,255,0.5);
+            background: rgba(200,170,120,0.4);
+            border-color: rgba(220,190,140,0.7);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.2);
         }
         .btn--primary {
             background: var(--white);
