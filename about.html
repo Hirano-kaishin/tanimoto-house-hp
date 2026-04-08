@@ -232,9 +232,6 @@ window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.
 const observer=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:.15});
 document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
 document.querySelectorAll('.nav a').forEach(a=>{a.addEventListener('click',()=>document.querySelector('.nav').classList.remove('open'))});
-
-// Load custom representative photo from admin
-})();
 </script>
 <script type="module">
 import { loadSiteData, loadImageData } from './firebase.js';
